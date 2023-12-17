@@ -113,7 +113,7 @@ class compute_maps:
             # newhospipredictionsdf = pd.read_csv(filename)
             # print(filename + " Read!")
 
-            filePath = '/home/ludo915/Eco-Tech H2GAM/cams/fr/forecast/'
+            filePath = '/home/ludo915/eco-tech-h2gam/cams/fr/forecast/'
             latestfiledatestring = self.findlatestdateofcamsdata(filePath)[1].strftime('%Y-%m-%d')
             fileName = "cams-forecast-"+latestfiledatestring +".nc"
             pollutants = xr.open_dataset(filePath + fileName).sel(time = j)
@@ -156,7 +156,7 @@ class compute_maps:
             # =============================================================================
             # Interpolation
             # =============================================================================
-            pop = pd.read_csv("/home/ludo915/Eco-Tech H2GAM/pop.csv", usecols=[0,1,2,3,4,5,6,42])
+            pop = pd.read_csv("/home/ludo915/eco-tech-h2gam/pop.csv", usecols=[0,1,2,3,4,5,6,42])
             pop.columns = ['reg', 'dep', 'com', 'article', 'com_nom', 'lon', 'lat', 'total']
             lons, lats = pop.lon, pop.lat
             xrLons = xr.DataArray(lons, dims='com')
@@ -178,7 +178,7 @@ class compute_maps:
             #for lead in progressbar(range(97), 'Compute risk: ', 60):
             print("Computing Atmospheric Pollutants maps ...")
             
-            dfpollution2 = pd.read_csv("/home/ludo915/Eco-Tech H2GAM/Enriched_Covid_history_data.csv")
+            dfpollution2 = pd.read_csv("/home/ludo915/eco-tech-h2gam/Enriched_Covid_history_data.csv")
             dfpollution2= dfpollution2.dropna()
             
             risk1 = pm25Interpolated
@@ -463,37 +463,37 @@ class compute_maps:
             counter += 1
 
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/Eco-Tech H2GAM/forecast/fr/'
+        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'PM2.5-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images1, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/Eco-Tech H2GAM/forecast/fr/'
+        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'CO-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images2, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/Eco-Tech H2GAM/forecast/fr/'
+        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'O3-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images3, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/Eco-Tech H2GAM/forecast/fr/'
+        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'NO2-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images4, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/Eco-Tech H2GAM/forecast/fr/'
+        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'PM10-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images5, 'GIF', **kargs)
         
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/Eco-Tech H2GAM/forecast/fr/'
+        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'SO2-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images6, 'GIF', **kargs)
