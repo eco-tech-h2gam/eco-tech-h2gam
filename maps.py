@@ -1,4 +1,6 @@
 import sys
+import platform
+import os
 import datetime as dt
 from datetime import datetime
 from datetime import date
@@ -18,14 +20,15 @@ from os.path import isfile, join
 from tqdm import tqdm  
 import warnings
 warnings.filterwarnings("ignore")  
-
+sys = platform.system()
+work_dir = os.path.dirname(os.path.abspath(__file__))
 today = date.today()  
 print(today)
 class compute_maps:
     def __init__(self):
         self.status = None
         self.data = None
-  
+    
     def max_normalize(self, x):
         return (x - x.min()) / (x.max() - x.min())
 
@@ -112,8 +115,11 @@ class compute_maps:
             # filename = "/home/ludo915/code/covsco/predictions/fr/" + currentDatestring + "_predictions_for_day_" + str(counter) +".csv"
             # newhospipredictionsdf = pd.read_csv(filename)
             # print(filename + " Read!")
+            if sys == "Windows":
+                filePath = work_dir + "\\cams\\fr\\forecast\\"
+            else:
+                filePath = work_dir + '/cams/fr/forecast/'
 
-            filePath = '/home/ludo915/eco-tech-h2gam/cams/fr/forecast/'
             latestfiledatestring = self.findlatestdateofcamsdata(filePath)[1].strftime('%Y-%m-%d')
             fileName = "cams-forecast-"+latestfiledatestring +".nc"
             pollutants = xr.open_dataset(filePath + fileName).sel(time = j)
@@ -156,7 +162,11 @@ class compute_maps:
             # =============================================================================
             # Interpolation
             # =============================================================================
-            pop = pd.read_csv("/home/ludo915/eco-tech-h2gam/pop.csv", usecols=[0,1,2,3,4,5,6,42])
+            if sys == "Windows":
+                pop = pd.read_csv(work_dir + "\\pop.csv")
+            else:
+                pop = pd.read_csv(work_dir +"/pop.csv", usecols=[0,1,2,3,4,5,6,42])
+
             pop.columns = ['reg', 'dep', 'com', 'article', 'com_nom', 'lon', 'lat', 'total']
             lons, lats = pop.lon, pop.lat
             xrLons = xr.DataArray(lons, dims='com')
@@ -178,7 +188,13 @@ class compute_maps:
             #for lead in progressbar(range(97), 'Compute risk: ', 60):
             print("Computing Atmospheric Pollutants maps ...")
             
-            dfpollution2 = pd.read_csv("/home/ludo915/eco-tech-h2gam/Enriched_Covid_history_data.csv")
+            if sys == "Windows":
+                dfpollution2 = pd.read_csv(work_dir + "/Enriched_Covid_history_data.csv")
+
+            else:   
+                dfpollution2 = pd.read_csv(work_dir + "/Enriched_Covid_history_data.csv")
+           
+            
             dfpollution2= dfpollution2.dropna()
             
             risk1 = pm25Interpolated

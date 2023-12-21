@@ -11,6 +11,7 @@ from os import listdir
 from os.path import isfile, join
 import urllib3
 urllib3.disable_warnings()
+import platform
 
 class download_cams_forecast:
     
@@ -19,8 +20,16 @@ class download_cams_forecast:
         self.save_to = None
 
     def download(self):
+        sys = platform.system()
         self.work_dir = os.path.dirname(os.path.abspath(__file__))
-        self.save_to = os.path.join(self.work_dir) + "//cams//fr//forecast"
+        
+        if sys == "Windows":
+            self.save_to = os.path.join(self.work_dir) + "//cams//fr//forecast"
+        else:
+            self.save_to = os.path.join(self.work_dir) + "\cams\fr\forecast"
+
+        
+        print("System:", sys) 
 
         if not os.path.exists(self.save_to):
             os.makedirs(self.save_to)
@@ -28,8 +37,13 @@ class download_cams_forecast:
         # get personal directory of cdsapi
         try:
             #with open('/home/ludo915/code/covsco/scripts/.cdsapirc_cams', 'r') as file:
-            with open(self.work_dir + "//.cdsapirc_cams", 'r') as file:
-                cams_api = file.readline().rstrip()
+            
+            if sys == "Windows":
+                with open(self.work_dir + "\.cdsapirc_cams_windows", 'r') as file:
+                    cams_api = file.readline().rstrip()
+            else:
+                with open(self.work_dir + "//.cdsapirc_cams", "r") as file:
+                    cams_api = file.readline().rstrip()
         except FileNotFoundError:
 
             raise FileNotFoundError("""cdsapirc file cannot be found. Write the
