@@ -31,20 +31,6 @@ class compute_maps:
     
     def max_normalize(self, x):
         return (x - x.min()) / (x.max() - x.min())
-
-    def progressbar(self, it, prefix="", size=60, file=sys.stdout):
-        count = len(it)
-        def show(j):
-            x = int(size*j/count)
-            file.write("%s[%s%s] %i/%i\r" % (prefix, "#"*x, "."*(size-x), j, count))
-            file.flush()
-        show(0)
-        for i, item in enumerate(it):
-            yield item
-            show(i+1)
-        file.write("\n")
-        file.flush()
-        return None
     
     def findlatestdateofcamsdata(self, mypath):
             dates = []
@@ -163,10 +149,10 @@ class compute_maps:
             # Interpolation
             # =============================================================================
             if sys == "Windows":
-                pop = pd.read_csv(work_dir + "\\pop.csv")
+                pop = pd.read_csv(work_dir + "\\pop.csv", usecols=[0,1,2,3,4,5,6,42])
             else:
                 pop = pd.read_csv(work_dir +"/pop.csv", usecols=[0,1,2,3,4,5,6,42])
-
+        
             pop.columns = ['reg', 'dep', 'com', 'article', 'com_nom', 'lon', 'lat', 'total']
             lons, lats = pop.lon, pop.lat
             xrLons = xr.DataArray(lons, dims='com')
@@ -479,37 +465,36 @@ class compute_maps:
             counter += 1
 
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
+        if sys == "Windows":
+            gifPath = work_dir + "\\forecast\\fr\\"
+        else:
+            gifPath = work_dir + "/forecast/fr/"
+
         gifName = 'PM2.5-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images1, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'CO-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images2, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'O3-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images3, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'NO2-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images4, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'PM10-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images5, 'GIF', **kargs)
         
         print('Create gif ...', flush=True, end='')
-        gifPath = '/home/ludo915/eco-tech-h2gam/forecast/fr/'
         gifName = 'SO2-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images6, 'GIF', **kargs)
