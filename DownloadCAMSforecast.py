@@ -1,4 +1,4 @@
-import os
+import os, shutil
 from datetime import date
 import datetime as dt
 import cdsapi
@@ -22,12 +22,22 @@ class download_cams_forecast:
     def download(self):
         sys = platform.system()
         self.work_dir = os.path.dirname(os.path.abspath(__file__))
-        
+        print("sys:",sys)
         if sys == "Windows":
-            self.save_to = os.path.join(self.work_dir) + "//cams//fr//forecast"
+            self.save_to = os.path.join(self.work_dir) + "\\cams\\fr\\forecast"
         else:
-            self.save_to = os.path.join(self.work_dir) + "\cams\fr\forecast"
+            self.save_to = os.path.join(self.work_dir) + "/cams/fr/forecast"
 
+        folder = self.save_to
+        for filename in os.listdir(folder):
+            file_path = os.path.join(folder, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print('Failed to delete %s. Reason: %s' % (file_path, e))
         
         print("System:", sys) 
 

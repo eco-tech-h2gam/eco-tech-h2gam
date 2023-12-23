@@ -1,6 +1,6 @@
 import sys
 import platform
-import os
+import os, shutil
 import datetime as dt
 from datetime import datetime
 from datetime import date
@@ -36,7 +36,7 @@ class compute_maps:
             dates = []
             onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
             for filename in onlyfiles:
-                dates.append(pd.to_datetime(filename[14:24]))
+                dates.append(pd.to_datetime(filename[14:24], dayfirst = False))
                 print(dates)
             
             if dates != []:
@@ -89,7 +89,7 @@ class compute_maps:
         risk5Maps = []
         risk6Maps = []
         newhospipredmaps = []
-        currentDatestring = currentDate.strftime('%Y-%m-%d')
+        
 
         # covidExtraToCom[['1MMaxpm25','1MMaxpm10','1MMaxo3','1MMaxno2','1MMaxco','pm107davg','pm257davg','o37davg','no27davg','co7davg','pm101Mavg',\
         #   'pm251Mavg','o31Mavg','no21Mavg','co1Mavg','population','hospi','CovidPosTest' ]] \
@@ -107,6 +107,7 @@ class compute_maps:
                 filePath = work_dir + '/cams/fr/forecast/'
 
             latestfiledatestring = self.findlatestdateofcamsdata(filePath)[1].strftime('%Y-%m-%d')
+            print("latdate:", latestfiledatestring)
             fileName = "cams-forecast-"+latestfiledatestring +".nc"
             pollutants = xr.open_dataset(filePath + fileName).sel(time = j)
 
@@ -260,7 +261,7 @@ class compute_maps:
 
             ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
 
-            currentDateWD = today.strftime('%a, %d - %m, %Y')
+            currentDateWD = pd.to_datetime(latestfiledatestring).strftime('%a, %d - %m, %Y')
             ax1.set_title('PM2.5 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 
@@ -295,9 +296,6 @@ class compute_maps:
             cbar.ax.xaxis.set_label_position('top')
 
             ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
-
-            #currentDateWD = datetime.strptime(str(dfpollution3["date"].max())).strftime('%a, %d %b %Y')
-            currentDateWD = pd.to_datetime(today, dayfirst = False).strftime('%a, %d %b %Y')
             ax1.set_title('CO concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 
@@ -332,8 +330,6 @@ class compute_maps:
             cbar.ax.xaxis.set_label_position('top')
 
             ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
-
-            currentDateWD = pd.to_datetime(today, dayfirst = False).strftime('%a, %d %b %Y')
             ax1.set_title('O3 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 
@@ -369,7 +365,7 @@ class compute_maps:
 
             ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
 
-            currentDateWD = pd.to_datetime(today, dayfirst = False).strftime('%a, %d %b %Y')
+            currentDateWD = pd.to_datetime(latestfiledatestring, dayfirst = False).strftime('%a, %d %b %Y')
             ax1.set_title('NO2 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 
@@ -404,8 +400,6 @@ class compute_maps:
             cbar.ax.xaxis.set_label_position('top')
 
             ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
-
-            currentDateWD = pd.to_datetime(today, dayfirst = False).strftime('%a, %d %b %Y')
             ax1.set_title('PM10 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 
@@ -440,8 +434,6 @@ class compute_maps:
             cbar.ax.xaxis.set_label_position('top')
 
             ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
-
-            currentDateWD = pd.to_datetime(today, dayfirst = False).strftime('%a, %d %b %Y')
             ax1.set_title('SO2 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 
@@ -470,6 +462,17 @@ class compute_maps:
         else:
             gifPath = work_dir + "/forecast/fr/"
 
+        folder = gifPath
+        for filename in os.listdir(folder):
+            file_path = os.path.join(folder, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print('Failed to delete %s. Reason: %s' % (file_path, e))
+        currentDatestring = pd.to_datetime(latestfiledatestring, dayfirst = False).strftime('%Y-%m-%d')
         gifName = 'PM2.5-concentration-{:}.gif'.format(currentDatestring)
         kargs = { 'duration': 1 }
         imageio.mimwrite(gifPath + gifName, images1, 'GIF', **kargs)
