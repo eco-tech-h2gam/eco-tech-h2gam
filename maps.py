@@ -107,6 +107,7 @@ class compute_maps:
                 filePath = work_dir + '/cams/fr/forecast/'
 
             latestfiledatestring = self.findlatestdateofcamsdata(filePath)[1].strftime('%Y-%m-%d')
+            currentDatestring = pd.to_datetime(latestfiledatestring, dayfirst = False).strftime('%Y-%m-%d')
             print("latdate:", latestfiledatestring)
             fileName = "cams-forecast-"+latestfiledatestring +".nc"
             pollutants = xr.open_dataset(filePath + fileName).sel(time = j)
@@ -242,13 +243,24 @@ class compute_maps:
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
-            ax1.background_patch.set_fill(False)
+            
+            if sys == "Windows":
+                for patch in ax1.patches:
+                    patch.set_visible(False)
+            else:
+                ax1.background_patch.set_fill(False)
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
                 edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
-                a.outline_patch.set_linewidth(0.)
+                if hasattr(a, 'outline_patch'):
+                    a.outline_patch.set_linewidth(0.) 
+                else:
+                    text_x = 0.5  # X-coordinate in axes coordinates
+                    text_y = 0.95  # Y-coordinate in axes coordinates
+                    text = 'PM2.5-concentration:' + currentDatestring + " + " + j
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk1Maps[counter].lon,risk1Maps[counter].lat,c=risk1Maps[counter].idx,
@@ -278,13 +290,25 @@ class compute_maps:
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
-            ax1.background_patch.set_fill(False)
+
+            if sys == "Windows":
+                for patch in ax1.patches:
+                    patch.set_visible(False)
+            else:
+                ax1.background_patch.set_fill(False)
+
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
                 edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
-                a.outline_patch.set_linewidth(0.)
+                if hasattr(a, 'outline_patch'):
+                    a.outline_patch.set_linewidth(0.)
+                else:
+                    text_x = 0.5  # X-coordinate in axes coordinates
+                    text_y = 0.95  # Y-coordinate in axes coordinates
+                    text = 'CO-concentration:' + currentDatestring + " + " + j
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk2Maps[counter].lon,risk2Maps[counter].lat,c=risk2Maps[counter].idx,
@@ -312,13 +336,25 @@ class compute_maps:
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
-            ax1.background_patch.set_fill(False)
+
+            if sys == "Windows":
+                for patch in ax1.patches:
+                    patch.set_visible(False)
+            else:
+                ax1.background_patch.set_fill(False)
+
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
                 edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
-                a.outline_patch.set_linewidth(0.)
+                if hasattr(a, 'outline_patch'):
+                    a.outline_patch.set_linewidth(0.)
+                else:
+                    text_x = 0.5  # X-coordinate in axes coordinates
+                    text_y = 0.95  # Y-coordinate in axes coordinates
+                    text = 'O3-concentration:' + currentDatestring + " + " + j
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk3Maps[counter].lon,risk3Maps[counter].lat,c=risk3Maps[counter].idx,
@@ -346,13 +382,26 @@ class compute_maps:
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
-            ax1.background_patch.set_fill(False)
+
+            if sys == "Windows":
+                for patch in ax1.patches:
+                    patch.set_visible(False)
+            else:
+                ax1.background_patch.set_fill(False)
+
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
                 edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
-                a.outline_patch.set_linewidth(0.)
+
+                if hasattr(a, 'outline_patch'):
+                    a.outline_patch.set_linewidth(0.)
+                else:
+                    text_x = 0.5  # X-coordinate in axes coordinates
+                    text_y = 0.95  # Y-coordinate in axes coordinates
+                    text = 'NO2-concentration:' + currentDatestring + " + " + j
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk4Maps[counter].lon,risk4Maps[counter].lat,c=risk4Maps[counter].idx,
@@ -382,13 +431,24 @@ class compute_maps:
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
-            ax1.background_patch.set_fill(False)
+            if sys == "Windows":
+                for patch in ax1.patches:
+                    patch.set_visible(False)
+            else:
+                ax1.background_patch.set_fill(False)
+
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
                 edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
-                a.outline_patch.set_linewidth(0.)
+                if hasattr(a, 'outline_patch'):
+                    a.outline_patch.set_linewidth(0.)
+                else:
+                    text_x = 0.5  # X-coordinate in axes coordinates
+                    text_y = 0.95  # Y-coordinate in axes coordinates
+                    text = 'PM10-concentration:' + currentDatestring + " + " + j
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk5Maps[counter].lon,risk5Maps[counter].lat,c=risk5Maps[counter].idx,
@@ -416,13 +476,23 @@ class compute_maps:
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
-            ax1.background_patch.set_fill(False)
+            if sys == "Windows":
+                for patch in ax1.patches:
+                    patch.set_visible(False)
+            else:
+                ax1.background_patch.set_fill(False)
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
                 edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
-                a.outline_patch.set_linewidth(0.)
+                if hasattr(a, 'outline_patch'):
+                    a.outline_patch.set_linewidth(0.)
+                else:
+                    text_x = 0.5  # X-coordinate in axes coordinates
+                    text_y = 0.95  # Y-coordinate in axes coordinates
+                    text = 'SO2-concentration:' + currentDatestring + " + " + j
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk6Maps[counter].lon,risk6Maps[counter].lat,c=risk6Maps[counter].idx,
@@ -472,35 +542,65 @@ class compute_maps:
                     shutil.rmtree(file_path)
             except Exception as e:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
-        currentDatestring = pd.to_datetime(latestfiledatestring, dayfirst = False).strftime('%Y-%m-%d')
+        
         gifName = 'PM2.5-concentration-{:}.gif'.format(currentDatestring)
-        kargs = { 'duration': 1 }
-        imageio.mimwrite(gifPath + gifName, images1, 'GIF', **kargs)
+        if sys == "Windows":
+            duration = 1  # Adjust the duration value as needed
+            fps = 1 / duration
+            imageio.mimsave(gifPath + gifName, images1, 'GIF', fps = fps)
+        else:
+            kargs = { 'duration': 1 }
+            imageio.mimwrite(gifPath + gifName, images1, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
         gifName = 'CO-concentration-{:}.gif'.format(currentDatestring)
-        kargs = { 'duration': 1 }
-        imageio.mimwrite(gifPath + gifName, images2, 'GIF', **kargs)
+        if sys == "Windows":
+            duration = 1  # Adjust the duration value as needed
+            fps = 1 / duration
+            imageio.mimsave(gifPath + gifName, images2, 'GIF', fps=fps)
+        else:
+            kargs = { 'duration': 1 }
+            imageio.mimwrite(gifPath + gifName, images2, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
         gifName = 'O3-concentration-{:}.gif'.format(currentDatestring)
-        kargs = { 'duration': 1 }
-        imageio.mimwrite(gifPath + gifName, images3, 'GIF', **kargs)
+        if sys == "Windows":
+            duration = 1  # Adjust the duration value as needed
+            fps = 1/ duration
+            imageio.mimsave(gifPath + gifName, images3, 'GIF', fps = fps)
+        else:
+            kargs = { 'duration': 1 }
+            imageio.mimwrite(gifPath + gifName, images3, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
         gifName = 'NO2-concentration-{:}.gif'.format(currentDatestring)
-        kargs = { 'duration': 1 }
-        imageio.mimwrite(gifPath + gifName, images4, 'GIF', **kargs)
+        if sys == "Windows":
+            duration = 1  # Adjust the duration value as needed
+            fps = 1/ duration
+            imageio.mimsave(gifPath + gifName, images4, 'GIF', fps = fps)
+        else:
+            kargs = { 'duration': 1 }
+            imageio.mimwrite(gifPath + gifName, images4, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
         gifName = 'PM10-concentration-{:}.gif'.format(currentDatestring)
-        kargs = { 'duration': 1 }
-        imageio.mimwrite(gifPath + gifName, images5, 'GIF', **kargs)
+        if sys == "Windows":
+            duration = 1  # Adjust the duration value as needed
+            fps = 1/ duration
+            imageio.mimsave(gifPath + gifName, images5, 'GIF', fps=fps)
+        else:
+            kargs = { 'duration': 1 }
+            imageio.mimwrite(gifPath + gifName, images5, 'GIF', **kargs)
         
         print('Create gif ...', flush=True, end='')
         gifName = 'SO2-concentration-{:}.gif'.format(currentDatestring)
-        kargs = { 'duration': 1 }
-        imageio.mimwrite(gifPath + gifName, images6, 'GIF', **kargs)
+        if sys == "Windows":
+            duration = 1  # Adjust the duration value as needed
+            fps = 1/duration
+            imageio.mimsave(gifPath + gifName, images6, 'GIF', fps=fps)
+        else:
+            kargs = { 'duration': 1 }
+            imageio.mimwrite(gifPath + gifName, images6, 'GIF', **kargs)
 
         print('OK')
         print('Finished.')
