@@ -1,3 +1,5 @@
+gunicorn
 pyyaml
 seaborn
 imageio
+streamlit
