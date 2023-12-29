@@ -50,10 +50,10 @@ class download_cams_forecast:
             
             if sys == "Windows":
                 with open(self.work_dir + "\.cdsapirc_cams_windows", 'r') as file:
-                    cams_api = file.readline().rstrip()
+                    cams_api = self.work_dir + "\\.cdsapirc"
             else:
                 with open(self.work_dir + "//.cdsapirc_cams", "r") as file:
-                    cams_api = file.readline().rstrip()
+                    cams_api = self.work_dir + "/.cdsapirc"
         except FileNotFoundError:
 
             raise FileNotFoundError("""cdsapirc file cannot be found. Write the
