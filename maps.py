@@ -12,6 +12,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+from matplotlib.patches import Rectangle
 import seaborn as sns
 import io
 import imageio
@@ -46,8 +47,8 @@ class compute_maps:
 
     def compute_maps(self):
         currentDate = pd.to_datetime(today, dayfirst = False)
-        grayDark = '#e1e1e1'
-        grayLight = '#404040'
+        grayDark = '#404040'
+        grayLight = '#e1e1e1'
 
         sns.set(
         context 	= 'paper',
@@ -56,16 +57,16 @@ class compute_maps:
         color_codes = True,
             font_scale  = 2.0,
         font 		= 'sans-serif',
-        rc={
-            'axes.edgecolor'	: grayDark
-            ,'text.color' 		: grayDark
-            ,'axes.labelcolor' 	: grayDark
-            ,'xtick.color' 		: grayDark
-            ,'ytick.color' 		: grayDark
-                ,'figure.facecolor' : grayLight
-                ,'axes.facecolor'   : grayLight
-                ,'savefig.facecolor': grayLight
-            }
+#         rc={
+#             'axes.edgecolor'	: grayDark
+#             ,'text.color' 		: grayDark
+#             ,'axes.labelcolor' 	: grayDark
+#             ,'xtick.color' 		: grayDark
+#             ,'ytick.color' 		: grayDark
+# #                ,'figure.facecolor' : grayDark
+#  #               ,'axes.facecolor'   : grayDark
+#  #               ,'savefig.facecolor': grayDark
+#             }
         )
 
         print('Data pre-processing:', flush=True)
@@ -242,6 +243,7 @@ class compute_maps:
             fig = plt.figure(figsize=(8,8))
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
+          
             axes = [ax1]
             
             if sys == "Windows":
@@ -251,7 +253,7 @@ class compute_maps:
                 ax1.background_patch.set_fill(False)
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
-                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
+                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
                 if hasattr(a, 'outline_patch'):
@@ -262,6 +264,7 @@ class compute_maps:
                     text = 'PM2.5-concentration:' + currentDatestring + " + " + j
                     a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
                 pass
+               
 
             cax = ax1.scatter(risk1Maps[counter].lon,risk1Maps[counter].lat,c=risk1Maps[counter].idx,
             cmap='RdYlGn_r', s=markersize*5, vmin=0, vmax=risk1max, zorder=4)
@@ -299,7 +302,7 @@ class compute_maps:
 
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
-                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
+                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
                 if hasattr(a, 'outline_patch'):
@@ -345,7 +348,7 @@ class compute_maps:
 
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
-                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
+                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
                 if hasattr(a, 'outline_patch'):
@@ -391,7 +394,7 @@ class compute_maps:
 
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
-                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
+                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
 
@@ -439,7 +442,7 @@ class compute_maps:
 
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
-                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
+                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
                 if hasattr(a, 'outline_patch'):
@@ -483,7 +486,7 @@ class compute_maps:
                 ax1.background_patch.set_fill(False)
             for a in axes:
                 a.add_geometries([regionmask.defined_regions.prudence["FR"].polygon,], ccrs.PlateCarree(),
-                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0.6, zorder=0)
+                edgecolor=grayDark, lw=2, facecolor=grayDark, alpha=0, zorder=0)
                 a.set_extent([-5,10,41,52])
                 a.set_aspect('auto')
                 if hasattr(a, 'outline_patch'):
