@@ -1,0 +1,22 @@
+Procédure:
+
+1) Install Python
+https://www.python.org/downloads/release/python-3121/
+add Python to path 
+
+2) Install Anaconda
+https://www.anaconda.com/download
+Add Anaconda to path
+
+3) Deploy CDS-API
+pip install cdsapi
+
+4) Move ECO-TECH H2GAM folder to C root
+cd "ECO-TECH H2GAM"
+
+conda install -c conda-forge regionmask cartopy
+
+Dde de passeport et de CI:
+
+EYBGQFZ831
+

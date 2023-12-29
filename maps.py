@@ -47,8 +47,8 @@ class compute_maps:
 
     def compute_maps(self):
         currentDate = pd.to_datetime(today, dayfirst = False)
-        grayDark = '#404040'
-        grayLight = '#e1e1e1'
+        grayDark = '#e1e1e1'
+        grayLight = '#404040'
 
         sns.set(
         context 	= 'paper',

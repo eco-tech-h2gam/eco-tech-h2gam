@@ -1,0 +1,13 @@
+heroku
+heroku login
+git clone https://github.com/eco-tech-h2gam/eco-tech-h2gam.git
+cd eco-tech-h2gam
+heroku create
+heroku buildpacks:set heroku/python
+git push heroku master
+heroku ps:scale web=1
+heroku open
+heroku logs --tail
+heroku ps
+heroku ps:scale web=0
+heroku open

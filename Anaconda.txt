@@ -1,0 +1,18 @@
+PowerShell:
+
+set-executionpolicy unrestricted
+conda init powershell
+conda create --name eco-tech-h2gam
+conda activate eco-tech-h2gam
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+CMD Shell
+conda activate eco-tech-h2gam
+conda install -c conda-forge regionmask cartopy
+conda install -c conda-forge cdsapi
+conda install pip
+pip install pyyaml
+pip install seaborn
+pip install imageio
+
+
