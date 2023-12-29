@@ -4,7 +4,7 @@ import os, glob
 import platform
 import subprocess
 
-class app:
+class app():
 
     def __init__(self, sys, work_dir):
         self.sys = sys
