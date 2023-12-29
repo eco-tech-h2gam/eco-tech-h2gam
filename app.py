@@ -4,8 +4,7 @@ import os, glob
 import platform
 import subprocess
 
-port = int(os.environ.get("PORT", 8501))
-st.set_option('server.port', port)
+
 
 class app():
 
