@@ -15,6 +15,7 @@ pip install pyyaml
 pip install seaborn
 pip install imageio
 pip install streamlit
+pip install imageio[ffmpeg]
 
 https://products.aspose.cloud/imaging/python/conversion/gif-to-apng/
 

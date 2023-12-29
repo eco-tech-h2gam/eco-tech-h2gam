@@ -3,3 +3,4 @@ pyyaml
 seaborn
 imageio
 streamlit
+imageio[ffmpeg]
