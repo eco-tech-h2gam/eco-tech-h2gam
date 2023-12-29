@@ -550,9 +550,9 @@ class compute_maps:
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1 / duration
-            imageio.mimsave(gifPath + gifName, images1, 'GIF', fps = fps)
+            imageio.mimsave(gifPath + gifName, images1, 'GIF', fps = fps , loop=0)
         else:
-            kargs = { 'duration': 1 }
+            kargs = { 'duration': 1, "loop":0 }
             imageio.mimwrite(gifPath + gifName, images1, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
@@ -560,9 +560,9 @@ class compute_maps:
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1 / duration
-            imageio.mimsave(gifPath + gifName, images2, 'GIF', fps=fps)
+            imageio.mimsave(gifPath + gifName, images2, 'GIF', fps=fps, loop = 0)
         else:
-            kargs = { 'duration': 1 }
+            kargs = { 'duration': 1 , "loop" : 0 }
             imageio.mimwrite(gifPath + gifName, images2, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
@@ -570,9 +570,9 @@ class compute_maps:
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
-            imageio.mimsave(gifPath + gifName, images3, 'GIF', fps = fps)
+            imageio.mimsave(gifPath + gifName, images3, 'GIF', fps = fps, loop = 0)
         else:
-            kargs = { 'duration': 1 }
+            kargs = { 'duration': 1, "loop" : 0 }
             imageio.mimwrite(gifPath + gifName, images3, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
@@ -580,9 +580,9 @@ class compute_maps:
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
-            imageio.mimsave(gifPath + gifName, images4, 'GIF', fps = fps)
+            imageio.mimsave(gifPath + gifName, images4, 'GIF', fps = fps, loop = 0)
         else:
-            kargs = { 'duration': 1 }
+            kargs = { 'duration': 1, "loop" : 0 }
             imageio.mimwrite(gifPath + gifName, images4, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
@@ -590,9 +590,9 @@ class compute_maps:
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
-            imageio.mimsave(gifPath + gifName, images5, 'GIF', fps=fps)
+            imageio.mimsave(gifPath + gifName, images5, 'GIF', fps=fps, loop = 0)
         else:
-            kargs = { 'duration': 1 }
+            kargs = { 'duration': 1, "loop": 0 }
             imageio.mimwrite(gifPath + gifName, images5, 'GIF', **kargs)
         
         print('Create gif ...', flush=True, end='')
@@ -600,9 +600,9 @@ class compute_maps:
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/duration
-            imageio.mimsave(gifPath + gifName, images6, 'GIF', fps=fps)
+            imageio.mimsave(gifPath + gifName, images6, 'GIF', fps=fps, loop = 0)
         else:
-            kargs = { 'duration': 1 }
+            kargs = { 'duration': 1 , "loop": 0}
             imageio.mimwrite(gifPath + gifName, images6, 'GIF', **kargs)
 
         print('OK')
