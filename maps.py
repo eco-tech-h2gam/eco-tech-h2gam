@@ -240,7 +240,7 @@ class compute_maps:
             markersize = .1
             
 
-            fig = plt.figure(figsize=(8,8))
+            fig = plt.figure(figsize=(3,3))
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
           
@@ -262,7 +262,7 @@ class compute_maps:
                     text_x = 0.5  # X-coordinate in axes coordinates
                     text_y = 0.95  # Y-coordinate in axes coordinates
                     text = 'PM2.5-concentration:' + currentDatestring + " + " + j
-                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=10, ha='center', va='center')
                 pass
                
 
@@ -274,7 +274,7 @@ class compute_maps:
             cbar.ax.xaxis.set_ticks_position('top')
             cbar.ax.xaxis.set_label_position('top')
 
-            ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
+            ax1.text(0,.0,'Data \nCAMS', transform=ax1.transAxes,fontdict={'size':12})
 
             currentDateWD = pd.to_datetime(latestfiledatestring).strftime('%a, %d - %m, %Y')
             ax1.set_title('PM2.5 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
@@ -289,7 +289,7 @@ class compute_maps:
             buffer.close()
             plt.close()
 
-            fig = plt.figure(figsize=(8,8))
+            fig = plt.figure(figsize=(3,3))
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
@@ -311,7 +311,7 @@ class compute_maps:
                     text_x = 0.5  # X-coordinate in axes coordinates
                     text_y = 0.95  # Y-coordinate in axes coordinates
                     text = 'CO-concentration:' + currentDatestring + " + " + j
-                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=10, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk2Maps[counter].lon,risk2Maps[counter].lat,c=risk2Maps[counter].idx,
@@ -322,7 +322,7 @@ class compute_maps:
             cbar.ax.xaxis.set_ticks_position('top')
             cbar.ax.xaxis.set_label_position('top')
 
-            ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
+            ax1.text(0,.0,'Data \nCAMS', transform=ax1.transAxes,fontdict={'size':12})
             ax1.set_title('CO concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 
@@ -335,7 +335,7 @@ class compute_maps:
             buffer.close()
             plt.close()
 
-            fig = plt.figure(figsize=(8,8))
+            fig = plt.figure(figsize=(3,3))
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
@@ -357,7 +357,7 @@ class compute_maps:
                     text_x = 0.5  # X-coordinate in axes coordinates
                     text_y = 0.95  # Y-coordinate in axes coordinates
                     text = 'O3-concentration:' + currentDatestring + " + " + j
-                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=10, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk3Maps[counter].lon,risk3Maps[counter].lat,c=risk3Maps[counter].idx,
@@ -368,7 +368,7 @@ class compute_maps:
             cbar.ax.xaxis.set_ticks_position('top')
             cbar.ax.xaxis.set_label_position('top')
 
-            ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
+            ax1.text(0,.0,'Data \nCAMS', transform=ax1.transAxes,fontdict={'size':12})
             ax1.set_title('O3 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 
@@ -381,7 +381,7 @@ class compute_maps:
             buffer.close()
             plt.close()
 
-            fig = plt.figure(figsize=(8,8))
+            fig = plt.figure(figsize=(3,3))
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
@@ -404,7 +404,7 @@ class compute_maps:
                     text_x = 0.5  # X-coordinate in axes coordinates
                     text_y = 0.95  # Y-coordinate in axes coordinates
                     text = 'NO2-concentration:' + currentDatestring + " + " + j
-                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=10, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk4Maps[counter].lon,risk4Maps[counter].lat,c=risk4Maps[counter].idx,
@@ -415,7 +415,7 @@ class compute_maps:
             cbar.ax.xaxis.set_ticks_position('top')
             cbar.ax.xaxis.set_label_position('top')
 
-            ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
+            ax1.text(0,.0,'Data \nCAMS', transform=ax1.transAxes,fontdict={'size':12})
 
             currentDateWD = pd.to_datetime(latestfiledatestring, dayfirst = False).strftime('%a, %d %b %Y')
             ax1.set_title('NO2 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
@@ -430,7 +430,7 @@ class compute_maps:
             buffer.close()
             plt.close()
 
-            fig = plt.figure(figsize=(8,8))
+            fig = plt.figure(figsize=(3,3))
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
@@ -451,7 +451,7 @@ class compute_maps:
                     text_x = 0.5  # X-coordinate in axes coordinates
                     text_y = 0.95  # Y-coordinate in axes coordinates
                     text = 'PM10-concentration:' + currentDatestring + " + " + j
-                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=10, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk5Maps[counter].lon,risk5Maps[counter].lat,c=risk5Maps[counter].idx,
@@ -462,7 +462,7 @@ class compute_maps:
             cbar.ax.xaxis.set_ticks_position('top')
             cbar.ax.xaxis.set_label_position('top')
 
-            ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
+            ax1.text(0,.0,'Data \nCAMS', transform=ax1.transAxes,fontdict={'size':12})
             ax1.set_title('PM10 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 
@@ -475,7 +475,7 @@ class compute_maps:
             buffer.close()
             plt.close()
 
-            fig = plt.figure(figsize=(8,8))
+            fig = plt.figure(figsize=(3,3))
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
@@ -495,7 +495,7 @@ class compute_maps:
                     text_x = 0.5  # X-coordinate in axes coordinates
                     text_y = 0.95  # Y-coordinate in axes coordinates
                     text = 'SO2-concentration:' + currentDatestring + " + " + j
-                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=28, ha='center', va='center')
+                    a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=10, ha='center', va='center')
                 pass
 
             cax = ax1.scatter(risk6Maps[counter].lon,risk6Maps[counter].lat,c=risk6Maps[counter].idx,
@@ -506,7 +506,7 @@ class compute_maps:
             cbar.ax.xaxis.set_ticks_position('top')
             cbar.ax.xaxis.set_label_position('top')
 
-            ax1.text(0,.0,'Data \nCAMS \ndata.gouv.fr', transform=ax1.transAxes,fontdict={'size':12})
+            ax1.text(0,.0,'Data \nCAMS', transform=ax1.transAxes,fontdict={'size':12})
             ax1.set_title('SO2 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 

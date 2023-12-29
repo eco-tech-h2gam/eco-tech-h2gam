@@ -14,5 +14,8 @@ conda install pip
 pip install pyyaml
 pip install seaborn
 pip install imageio
+pip install streamlit
+
+https://products.aspose.cloud/imaging/python/conversion/gif-to-apng/
 
 
