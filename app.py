@@ -4,34 +4,25 @@ import os, glob
 import platform
 import subprocess
 
-# Run the other script
-
-
-
-
-
-
 class app:
 
-    def __init__(self):
-        self.sys = platform.system()
-        self.work_dir = os.path.dirname(os.path.abspath(__file__))   
-        if self.sys == "Windows":
-            self.mypath = self.work_dir + "\\forecast\\fr\\"
-        else:
-            self.mypath = self.work_dir + "/forecast/fr/" 
-
+    def __init__(self, sys, work_dir):
+        self.sys = sys
+        self.work_dir = work_dir   
         
-
     def display_gifs(self):
-        os.chdir(self.mypath)
+        if self.sys == "Windows":
+            mypath = self.work_dir + "\\forecast\\fr\\"
+        else:
+            mypath = self.work_dir + "/forecast/fr/" 
+        os.chdir(mypath)
         fileslist = []
         for file in glob.glob("*.gif"):
             print(file)
             fileslist.append(file)
 
         for i in range(0,len(fileslist)):
-            file_ = open(self.mypath + fileslist[i], "rb")
+            file_ = open(mypath + fileslist[i], "rb")
             contents = file_.read()
             data_url = base64.b64encode(contents).decode("utf-8")
             file_.close()
@@ -44,5 +35,5 @@ class app:
 if __name__ == '__main__':
     subprocess.run(["python", "DownloadCAMSforecast.py"])
     subprocess.run(["python", "maps.py"])
-    MyApp = app()
+    MyApp = app(platform.system(), os.path.dirname(os.path.abspath(__file__)) )
     MyApp.display_gifs()
