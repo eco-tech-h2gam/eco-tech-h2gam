@@ -3,7 +3,10 @@ import base64
 import os, glob
 import platform
 import subprocess
-
+import pandas as pd
+import datetime as dt
+from datetime import datetime
+from datetime import date
 
 
 class app():
@@ -23,7 +26,11 @@ class app():
             print(file)
             fileslist.append(file)
 
-      
+        dateoffile = pd.to_datetime(fileslist[0].split("_concentration-")[1],dayfirst = False)
+        if(dt.date.today() - dateoffile > pd.Timedelta("Days", 1)):
+            subprocess.run(["python", "DownloadCAMSforecast.py"])
+            subprocess.run(["python", "maps.py"])
+
         file_1 = open(mypath + fileslist[0], "rb")
         contents = file_1.read()
         data_url1 = base64.b64encode(contents).decode("utf-8")
@@ -77,7 +84,5 @@ class app():
         st.markdown(html_code2, unsafe_allow_html=True)
 
 if __name__ == '__main__':
-    #subprocess.run(["python", "DownloadCAMSforecast.py"])
-    #subprocess.run(["python", "maps.py"])
     MyApp = app(platform.system(), os.path.dirname(os.path.abspath(__file__)) )
     MyApp.display_gifs()

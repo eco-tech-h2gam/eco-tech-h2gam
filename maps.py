@@ -546,7 +546,7 @@ class compute_maps:
             except Exception as e:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
         
-        gifName = 'PM2.5-concentration-{:}.gif'.format(currentDatestring)
+        gifName = 'PM2.5_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1 / duration
@@ -556,7 +556,7 @@ class compute_maps:
             imageio.mimwrite(gifPath + gifName, images1, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifName = 'CO-concentration-{:}.gif'.format(currentDatestring)
+        gifName = 'CO_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1 / duration
@@ -566,7 +566,7 @@ class compute_maps:
             imageio.mimwrite(gifPath + gifName, images2, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifName = 'O3-concentration-{:}.gif'.format(currentDatestring)
+        gifName = 'O3_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
@@ -576,7 +576,7 @@ class compute_maps:
             imageio.mimwrite(gifPath + gifName, images3, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifName = 'NO2-concentration-{:}.gif'.format(currentDatestring)
+        gifName = 'NO2_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
@@ -586,7 +586,7 @@ class compute_maps:
             imageio.mimwrite(gifPath + gifName, images4, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
-        gifName = 'PM10-concentration-{:}.gif'.format(currentDatestring)
+        gifName = 'PM10_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
@@ -596,7 +596,7 @@ class compute_maps:
             imageio.mimwrite(gifPath + gifName, images5, 'GIF', **kargs)
         
         print('Create gif ...', flush=True, end='')
-        gifName = 'SO2-concentration-{:}.gif'.format(currentDatestring)
+        gifName = 'SO2_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/duration
