@@ -27,7 +27,7 @@ class app():
             fileslist.append(file)
 
         dateoffile = pd.to_datetime(fileslist[0].split("_concentration-")[1].split(".")[0],dayfirst = False)
-        if(pd.Timestamp(date.today())  - dateoffile > pd.Timedelta("2 Days")):
+        if(pd.Timestamp(date.today())  - dateoffile > pd.Timedelta("1 Days")):
             subprocess.run(["python", "DownloadCAMSforecast.py"])
             subprocess.run(["python", "maps.py"])
 
