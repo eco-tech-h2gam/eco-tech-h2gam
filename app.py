@@ -15,7 +15,7 @@ class app():
         self.sys = sys
         self.work_dir = work_dir   
 
-    def get_latest_gif(folder_path):
+    def get_latest_gif(self, folder_path):
         gifs = glob(os.path.join(folder_path, '*.gif'))
         latest_gif = max(gifs, key=os.path.getctime)
         return latest_gif
