@@ -1,6 +1,6 @@
 import streamlit as st
 import base64
-import os, glob
+import os, glob, shutil
 import platform
 import subprocess
 import pandas as pd
@@ -27,9 +27,16 @@ class app():
             fileslist.append(file)
 
         dateoffile = pd.to_datetime(fileslist[0].split("_concentration-")[1].split(".")[0],dayfirst = False)
+        print(pd.Timestamp(date.today())  - dateoffile)
         if(pd.Timestamp(date.today())  - dateoffile > pd.Timedelta("1 Days")):
-            subprocess.run(["python", "DownloadCAMSforecast.py"])
-            subprocess.run(["python", "maps.py"])
+            print(pd.Timestamp(date.today())  - dateoffile)
+            print("IN HERE")
+            if self.sys == "Windows":
+                subprocess.run("python " + self.work_dir + "\\DownloadCAMSforecast.py")
+                subprocess.run("python " +  self.work_dir + "\\maps.py")
+            else:
+                subprocess.run(["python", self.work_dir + "/DownloadCAMSforecast.py"])
+                subprocess.run(["python", self.work_dir + "/maps.py"])
 
         file_1 = open(mypath + fileslist[0], "rb")
         contents = file_1.read()
