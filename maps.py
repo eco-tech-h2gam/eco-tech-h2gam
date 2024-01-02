@@ -16,7 +16,6 @@ from matplotlib.patches import Rectangle
 import seaborn as sns
 import io
 import imageio
-import send2trash
 from os import listdir
 from os.path import isfile, join
 from tqdm import tqdm  
