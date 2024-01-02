@@ -44,17 +44,17 @@ class app():
                 subprocess.run(["python", self.work_dir + "/DownloadCAMSforecast.py"])
                 subprocess.run(["python", self.work_dir + "/maps.py"])
 
-        file_1 = open(self.return_path_to_gif("PM2.5") + self.get_latest_gif(self.return_path_to_gif("PM2.5")), "rb")
+        file_1 = open(self.get_latest_gif(self.return_path_to_gif("PM2.5")), "rb")
         contents = file_1.read()
         data_url1 = base64.b64encode(contents).decode("utf-8")
         file_1.close()
 
-        file_2 = open(self.return_path_to_gif("PM10") + self.get_latest_gif(self.return_path_to_gif("PM10")), "rb")
+        file_2 = open(self.get_latest_gif(self.return_path_to_gif("PM10")), "rb")
         contents = file_2.read()
         data_url2 = base64.b64encode(contents).decode("utf-8")
         file_2.close()
 
-        file_3 = open(self.return_path_to_gif("CO") + self.get_latest_gif(self.return_path_to_gif("CO")), "rb")
+        file_3 = open(self.get_latest_gif(self.return_path_to_gif("CO")), "rb")
         contents = file_3.read()
         data_url3 = base64.b64encode(contents).decode("utf-8")
         file_3.close()
@@ -68,17 +68,17 @@ class app():
             </div>
         """
 
-        file_4 = open(self.return_path_to_gif("NO2") + self.get_latest_gif(self.return_path_to_gif("NO2")), "rb")
+        file_4 = open(self.get_latest_gif(self.return_path_to_gif("NO2")), "rb")
         contents = file_4.read()
         data_url4 = base64.b64encode(contents).decode("utf-8")
         file_4.close()
 
-        file_5 = open(self.return_path_to_gif("SO2") + self.get_latest_gif(self.return_path_to_gif("SO2")), "rb")
+        file_5 = open(self.get_latest_gif(self.return_path_to_gif("SO2")), "rb")
         contents = file_5.read()
         data_url5 = base64.b64encode(contents).decode("utf-8")
         file_5.close()
 
-        file_6 = open(self.return_path_to_gif("O3") + self.get_latest_gif(self.return_path_to_gif("O3")), "rb")
+        file_6 = open(self.get_latest_gif(self.return_path_to_gif("O3")), "rb")
         contents = file_6.read()
         data_url6 = base64.b64encode(contents).decode("utf-8")
         file_6.close()
