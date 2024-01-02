@@ -14,19 +14,25 @@ class app():
     def __init__(self, sys, work_dir):
         self.sys = sys
         self.work_dir = work_dir   
-        
-    def display_gifs(self):
-        if self.sys == "Windows":
-            mypath = self.work_dir + "\\forecast\\fr\\"
-        else:
-            mypath = self.work_dir + "/forecast/fr/" 
-        os.chdir(mypath)
-        fileslist = []
-        for file in glob.glob("*.gif"):
-            print(file)
-            fileslist.append(file)
 
-        dateoffile = pd.to_datetime(fileslist[0].split("_concentration-")[1].split(".")[0],dayfirst = False)
+    def get_latest_gif(folder_path):
+        gifs = glob(os.path.join(folder_path, '*.gif'))
+        latest_gif = max(gifs, key=os.path.getctime)
+        return latest_gif
+    
+    def return_path_to_gif(self, pollutant):
+        if self.sys == "Windows":
+            mypath = self.work_dir + "\\forecast\\fr\\" + pollutant + "\\"
+        else:
+            mypath = self.work_dir + "/forecast/fr/" + pollutant +"/"
+        return mypath
+       
+    def display_gifs(self):
+
+        os.chdir(self.return_path_to_gif("PM2.5"))
+
+
+        dateoffile = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM2.5")).split("_concentration-")[1].split(".")[0],dayfirst = False)
         print(pd.Timestamp(date.today())  - dateoffile)
         if(pd.Timestamp(date.today())  - dateoffile > pd.Timedelta("1 Days")):
             print(pd.Timestamp(date.today())  - dateoffile)
@@ -38,17 +44,17 @@ class app():
                 subprocess.run(["python", self.work_dir + "/DownloadCAMSforecast.py"])
                 subprocess.run(["python", self.work_dir + "/maps.py"])
 
-        file_1 = open(mypath + fileslist[0], "rb")
+        file_1 = open(self.return_path_to_gif("PM2.5") + self.get_latest_gif(self.return_path_to_gif("PM2.5")), "rb")
         contents = file_1.read()
         data_url1 = base64.b64encode(contents).decode("utf-8")
         file_1.close()
 
-        file_2 = open(mypath + fileslist[1], "rb")
+        file_2 = open(self.return_path_to_gif("PM10") + self.get_latest_gif(self.return_path_to_gif("PM10")), "rb")
         contents = file_2.read()
         data_url2 = base64.b64encode(contents).decode("utf-8")
         file_2.close()
 
-        file_3 = open(mypath + fileslist[2], "rb")
+        file_3 = open(self.return_path_to_gif("CO") + self.get_latest_gif(self.return_path_to_gif("CO")), "rb")
         contents = file_3.read()
         data_url3 = base64.b64encode(contents).decode("utf-8")
         file_3.close()
@@ -62,17 +68,17 @@ class app():
             </div>
         """
 
-        file_4 = open(mypath + fileslist[3], "rb")
+        file_4 = open(self.return_path_to_gif("NO2") + self.get_latest_gif(self.return_path_to_gif("NO2")), "rb")
         contents = file_4.read()
         data_url4 = base64.b64encode(contents).decode("utf-8")
         file_4.close()
 
-        file_5 = open(mypath + fileslist[4], "rb")
+        file_5 = open(self.return_path_to_gif("SO2") + self.get_latest_gif(self.return_path_to_gif("SO2")), "rb")
         contents = file_5.read()
         data_url5 = base64.b64encode(contents).decode("utf-8")
         file_5.close()
 
-        file_6 = open(mypath + fileslist[5], "rb")
+        file_6 = open(self.return_path_to_gif("O3") + self.get_latest_gif(self.return_path_to_gif("O3")), "rb")
         contents = file_6.read()
         data_url6 = base64.b64encode(contents).decode("utf-8")
         file_6.close()

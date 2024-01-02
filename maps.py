@@ -535,74 +535,64 @@ class compute_maps:
         else:
             gifPath = work_dir + "/forecast/fr/"
 
-        folder = gifPath
-        for filename in os.listdir(folder):
-            file_path = os.path.join(folder, filename)
-            try:
-                if os.path.isfile(file_path) or os.path.islink(file_path):
-                    os.unlink(file_path)
-                elif os.path.isdir(file_path):
-                    shutil.rmtree(file_path)
-            except Exception as e:
-                print('Failed to delete %s. Reason: %s' % (file_path, e))
         gifName = 'PM2.5_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1 / duration
-            imageio.mimsave(gifPath + gifName, images1, 'GIF', fps = fps , loop=0)
+            imageio.mimsave(gifPath + "PM2.5\\" + gifName, images1, 'GIF', fps = fps , loop=0)
         else:
             kargs = { 'duration': 1, "loop":0 }
-            imageio.mimwrite(gifPath + gifName, images1, 'GIF', **kargs)
+            imageio.mimwrite(gifPath + "PM2.5/" + gifName, images1, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
         gifName = 'CO_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1 / duration
-            imageio.mimsave(gifPath + gifName, images2, 'GIF', fps=fps, loop = 0)
+            imageio.mimsave(gifPath + "CO\\" + gifName, images2, 'GIF', fps=fps, loop = 0)
         else:
             kargs = { 'duration': 1 , "loop" : 0 }
-            imageio.mimwrite(gifPath + gifName, images2, 'GIF', **kargs)
+            imageio.mimwrite(gifPath + "CO/" + gifName, images2, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
         gifName = 'O3_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
-            imageio.mimsave(gifPath + gifName, images3, 'GIF', fps = fps, loop = 0)
+            imageio.mimsave(gifPath + "O3\\" + gifName, images3, 'GIF', fps = fps, loop = 0)
         else:
             kargs = { 'duration': 1, "loop" : 0 }
-            imageio.mimwrite(gifPath + gifName, images3, 'GIF', **kargs)
+            imageio.mimwrite(gifPath + "O3/" + gifName, images3, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
         gifName = 'NO2_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
-            imageio.mimsave(gifPath + gifName, images4, 'GIF', fps = fps, loop = 0)
+            imageio.mimsave(gifPath + "NO2\\" + gifName, images4, 'GIF', fps = fps, loop = 0)
         else:
             kargs = { 'duration': 1, "loop" : 0 }
-            imageio.mimwrite(gifPath + gifName, images4, 'GIF', **kargs)
+            imageio.mimwrite(gifPath + "NO2/" + gifName, images4, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
         gifName = 'PM10_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
-            imageio.mimsave(gifPath + gifName, images5, 'GIF', fps=fps, loop = 0)
+            imageio.mimsave(gifPath + "PM10\\" + gifName, images5, 'GIF', fps=fps, loop = 0)
         else:
             kargs = { 'duration': 1, "loop": 0 }
-            imageio.mimwrite(gifPath + gifName, images5, 'GIF', **kargs)
+            imageio.mimwrite(gifPath + "PM10/" + gifName, images5, 'GIF', **kargs)
         
         print('Create gif ...', flush=True, end='')
         gifName = 'SO2_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/duration
-            imageio.mimsave(gifPath + gifName, images6, 'GIF', fps=fps, loop = 0)
+            imageio.mimsave(gifPath + "SO2\\" + gifName, images6, 'GIF', fps=fps, loop = 0)
         else:
             kargs = { 'duration': 1 , "loop": 0}
-            imageio.mimwrite(gifPath + gifName, images6, 'GIF', **kargs)
+            imageio.mimwrite(gifPath + "SO2/" + gifName, images6, 'GIF', **kargs)
 
         print('OK')
         print('Finished.')
