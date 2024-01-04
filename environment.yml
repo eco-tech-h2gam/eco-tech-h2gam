@@ -4,6 +4,7 @@ channels:
   - defaults
 dependencies:
   - conda=4.10.3
+  - python=3.8
   - cartopy
   - regionmask
   - cdsapi

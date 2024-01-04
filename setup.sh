@@ -28,7 +28,7 @@ rm miniconda.sh
 export PATH="$HOME/miniconda/bin:$PATH"
 
 # Update conda and create a Conda environment
-conda update -q conda
+conda update -n base -c defaults conda
 conda env create -f environment.yml
 
 # Activate the Conda environment
