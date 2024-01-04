@@ -10,7 +10,7 @@ rm miniconda.sh
 
 # Add Miniconda to the PATH and initialize conda
 export PATH="$HOME/miniconda/bin:$PATH"
-source $HOME/miniconda/etc/profile.d/conda.sh
+conda init bash
 
 # Update conda and create a Conda environment
 conda update -n base -c defaults conda
