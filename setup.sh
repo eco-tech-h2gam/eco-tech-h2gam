@@ -19,6 +19,8 @@ conda env create -f environment.yml
 # Activate the Conda environment
 conda activate eco-tech-h2gam
 
+conda install --yes --file environment.yml
+
 # Install your Conda dependencies (replace with your actual dependencies)
 
 # (Optional) Install additional Python dependencies using pip
