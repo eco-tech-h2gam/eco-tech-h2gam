@@ -1,2 +1,5 @@
 build:
   config: environment.yml
+  buildpacks:
+    - https://github.com/heroku/heroku-buildpack-conda.git
+    - heroku/python
