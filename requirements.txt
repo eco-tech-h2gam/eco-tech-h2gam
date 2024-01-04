@@ -5,4 +5,3 @@ imageio
 streamlit
 imageio[ffmpeg]
 xarray
-encodings
