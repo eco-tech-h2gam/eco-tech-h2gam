@@ -14,6 +14,11 @@ port = $PORT\n\
 
 #!/bin/bash
 
+#!/bin/bash
+
+# Set UTF-8 encoding
+export PYTHONUTF8=1
+
 # Install Miniconda (replace with the appropriate URL for your platform)
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
 bash miniconda.sh -b -p $HOME/miniconda
@@ -24,13 +29,12 @@ export PATH="$HOME/miniconda/bin:$PATH"
 
 # Update conda and create a Conda environment
 conda update -q conda
-conda create -q -n eco-tech-h2gam python=3.8
+conda env create -f environment.yml
 
 # Activate the Conda environment
-source activate eco-tech-h2gam
+conda activate eco-tech-h2gam
 
 # Install your Conda dependencies (replace with your actual dependencies)
-conda install -q regionmask cartopy cdsapi
 
 # (Optional) Install additional Python dependencies using pip
 pip install -r requirements.txt
