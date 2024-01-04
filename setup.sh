@@ -8,20 +8,17 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O mi
 bash miniconda.sh -b -p $HOME/miniconda
 rm miniconda.sh
 
-# Add Miniconda to the PATH and initialize conda
-export PATH="$HOME/miniconda/bin:$PATH"
-conda init bash
-
 # Update conda and create a Conda environment
+export PATH="$HOME/miniconda/bin:$PATH"
 conda update -n base -c defaults conda
 conda env create -f environment.yml
 
 # Activate the Conda environment
+source $HOME/miniconda/etc/profile.d/conda.sh
 conda activate eco-tech-h2gam
 
+# Install your Conda dependencies
 conda install --yes --file environment.yml
-
-# Install your Conda dependencies (replace with your actual dependencies)
 
 # (Optional) Install additional Python dependencies using pip
 pip install -r requirements.txt
