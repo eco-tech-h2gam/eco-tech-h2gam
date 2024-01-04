@@ -18,7 +18,7 @@ class download_cams_forecast:
     def __init__(self):
         self.work_dir = None
         self.save_to = None
-
+    
     def download(self):
         sys = platform.system()
         self.work_dir = os.path.dirname(os.path.abspath(__file__))

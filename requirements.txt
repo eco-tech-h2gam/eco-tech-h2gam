@@ -4,3 +4,5 @@ seaborn
 imageio
 streamlit
 imageio[ffmpeg]
+xarray
+cdsapi
