@@ -1,19 +1,3 @@
-mkdir -p ~/.streamlit/
-
-echo "\
-[general]\n\
-email = \"ludovic.giraud@essec.edu\"\n\
-" > ~/.streamlit/credentials.toml
-
-echo "\
-[server]\n\
-headless = true\n\
-enableCORS=false\n\
-port = $PORT\n\
-" > ~/.streamlit/config.toml
-
-#!/bin/bash
-
 #!/bin/bash
 
 # Set UTF-8 encoding
@@ -24,8 +8,9 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O mi
 bash miniconda.sh -b -p $HOME/miniconda
 rm miniconda.sh
 
-# Add Miniconda to the PATH
+# Add Miniconda to the PATH and initialize conda
 export PATH="$HOME/miniconda/bin:$PATH"
+source $HOME/miniconda/etc/profile.d/conda.sh
 
 # Update conda and create a Conda environment
 conda update -n base -c defaults conda
@@ -41,4 +26,17 @@ pip install -r requirements.txt
 
 # Your other setup commands go here
 
+# Create Streamlit config files
+mkdir -p ~/.streamlit/
 
+echo "\
+[general]\n\
+email = \"ludovic.giraud@essec.edu\"\n\
+" > ~/.streamlit/credentials.toml
+
+echo "\
+[server]\n\
+headless = true\n\
+enableCORS=false\n\
+port = $PORT\n\
+" > ~/.streamlit/config.toml
