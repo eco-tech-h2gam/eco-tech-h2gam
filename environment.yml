@@ -1,7 +1,9 @@
- name: eco-tech-h2gam
+name: eco-tech-h2gam
 channels:
   - conda-forge
 dependencies:
   - regionmask
   - cartopy
   - cdsapi
+
+
