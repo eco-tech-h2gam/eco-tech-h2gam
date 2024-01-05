@@ -35,6 +35,11 @@ from tqdm import tqdm
 import warnings
 warnings.filterwarnings("ignore")  
 
+sys = platform.system()
+work_dir = os.path.dirname(os.path.abspath(__file__))
+today = date.today()  
+print(today)
+
 class app():
 
     def __init__(self, sys, work_dir):
