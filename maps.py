@@ -36,9 +36,9 @@ class compute_maps:
         self.region_name = 'eu-north-1'  # Replace with your actual region
         self.bucket_name = 'eco-tech-h2gam'
         self.object_key1 = 'pop.csv'  # Path to your CSV file in the S3 bucket
-        self.local_filename1 = 'pop.csv'  # Local file path to save the downloaded file
+        self.local_filename1 = work_dir + 'pop.csv'  # Local file path to save the downloaded file
         self.object_key2 = 'Enriched_Covid_history_data.csv'  # Path to your CSV file in the S3 bucket
-        self.local_filename2 = 'Enriched_Covid_history_data.csv'  # Local file path to save the downloaded file
+        self.local_filename2 = work_dir + 'Enriched_Covid_history_data.csv'  # Local file path to save the downloaded file
     
     def max_normalize(self, x):
         return (x - x.min()) / (x.max() - x.min())
