@@ -5,8 +5,11 @@ channels:
 dependencies:
   - conda=4.10.3
   - python=3.8
-  - cartopy
-  - regionmask
-  - cdsapi
-
+  - pip
+  # Add other dependencies from your requirements.txt file
+  - pip:
+    - -r requirements.txt
+    - cdsapi
+    - regionmask
+    - cartopy
 
