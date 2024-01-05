@@ -20,6 +20,8 @@ conda activate eco-tech-h2gam
 # Install your Conda dependencies
 conda install --yes --file environment.yml
 
+conda install cdsapi regionmask cartopy
+
 # (Optional) Install additional Python dependencies using pip
 pip install -r requirements.txt
 
