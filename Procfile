@@ -1,4 +1,4 @@
-web: sh setup.sh && source $HOME/miniconda/etc/profile.d/conda.sh && conda activate eco-tech-h2gam && streamlit run app.py
+web: sh setup.sh && streamlit run app.py
 
 
 # Uncomment this `release` process if you are using a database, so that Django's model
