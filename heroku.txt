@@ -13,3 +13,9 @@ heroku ps:scale web=0
 heroku open
 
 [System.Environment]::SetEnvironmentVariable('PATH', $env:PATH + ';C:\Users\ludov\AppData\Roaming\Python\Python311\Scripts', [System.EnvironmentVariableTarget]::Machine)
+
+heroku plugins:install https://gentle-castle-26852-a4edbfb7df92.herokuapp.com/
+
+conda eco-tech-h2gam create -f environment.yml
+
+https://help.heroku.com/sharing/ad47329d-5174-4ddc-8256-1a3e51ca78bf

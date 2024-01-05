@@ -38,11 +38,19 @@ class app():
             print(pd.Timestamp(date.today())  - dateoffile)
             print("IN HERE")
             if self.sys == "Windows":
-                subprocess.run("python " + self.work_dir + "\\DownloadCAMSforecast.py")
-                subprocess.run("python " +  self.work_dir + "\\maps.py")
+                with open(self.work_dir + "\\DownloadCAMSforecast.py", 'r') as file:
+                    script_contents = file.read()
+                exec(script_contents)
+                with open(self.work_dir + "\\maps.py", 'r') as file:
+                    script_contents = file.read()
+                exec(script_contents)
             else:
-                subprocess.run(["python", self.work_dir + "/DownloadCAMSforecast.py"])
-                subprocess.run(["python", self.work_dir + "/maps.py"])
+                with open(self.work_dir + "/DownloadCAMSforecast.py", 'r') as file:
+                    script_contents = file.read()
+                exec(script_contents)
+                with open(self.work_dir + "/maps.py", 'r') as file:
+                    script_contents = file.read()
+                exec(script_contents)
 
         file_1 = open(self.get_latest_gif(self.return_path_to_gif("PM2.5")), "rb")
         contents = file_1.read()
