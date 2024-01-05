@@ -5,3 +5,6 @@ imageio
 streamlit
 imageio[ffmpeg]
 xarray
+cdsapi
+regionmask
+cartopy
