@@ -8,3 +8,5 @@ xarray
 cdsapi
 regionmask
 cartopy
+netcdf4
+scipy
