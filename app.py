@@ -32,6 +32,7 @@ import seaborn as sns
 import io
 import imageio
 from tqdm import tqdm  
+import boto3
 import warnings
 warnings.filterwarnings("ignore")  
 

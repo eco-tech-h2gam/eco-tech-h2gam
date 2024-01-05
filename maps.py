@@ -20,6 +20,7 @@ from os import listdir
 from os.path import isfile, join
 from tqdm import tqdm  
 import warnings
+import boto3
 warnings.filterwarnings("ignore")  
 sys = platform.system()
 work_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,6 +30,15 @@ class compute_maps:
     def __init__(self):
         self.status = None
         self.data = None
+        # Specify your AWS credentials and S3 details
+        self.aws_access_key_id = 'AKIAXYKJRWRBU6Q4P64S'
+        self.aws_secret_access_key = '+AkxikLBIT2eUoDgo4F8RnE7RAO5bkUYR+5QG7ZW'
+        self.region_name = 'eu-north-1'  # Replace with your actual region
+        self.bucket_name = 'eco-tech-h2gam'
+        self.object_key1 = 'pop.csv'  # Path to your CSV file in the S3 bucket
+        self.local_filename1 = 'pop.csv'  # Local file path to save the downloaded file
+        self.object_key2 = 'Enriched_Covid_history_data.csv'  # Path to your CSV file in the S3 bucket
+        self.local_filename2 = 'Enriched_Covid_history_data.csv'  # Local file path to save the downloaded file
     
     def max_normalize(self, x):
         return (x - x.min()) / (x.max() - x.min())
@@ -44,8 +54,29 @@ class compute_maps:
                 return (dates, max(dates))
             else:
                 return (dates, dt.date.today() - pd.Timedelta("3 Y"))
+    
+    def download_csv_from_s3(self, bucket_name, object_key, local_filename):
+        # Create an S3 client
+        s3 = boto3.client('s3')
+
+        try:
+            # Download the CSV file from S3
+            s3.download_file(bucket_name, object_key, local_filename)
+            print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
+        except Exception as e:
+            print(f"Error downloading file: {e}")
 
     def compute_maps(self):
+        # Set up AWS credentials
+        boto3.setup_default_session(
+            aws_access_key_id=self.aws_access_key_id,
+            aws_secret_access_key=self.aws_secret_access_key,
+            region_name=self.region_name
+        )
+
+        # Download the CSV file from S3
+        self.download_csv_from_s3(self.bucket_name, self.object_key1, self.local_filename1)
+        self.download_csv_from_s3(self.bucket_name, self.object_key2, self.local_filename2)
         currentDate = pd.to_datetime(today, dayfirst = False)
         grayDark = '#e1e1e1'
         grayLight = '#404040'
