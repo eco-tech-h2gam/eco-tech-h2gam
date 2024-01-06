@@ -283,7 +283,7 @@ class compute_maps:
           
             axes = [ax1]
             
-            if sys == "Windows":
+            if not hasattr(ax1, 'background_patch'):
                 for patch in ax1.patches:
                     patch.set_visible(False)
             else:
@@ -331,7 +331,7 @@ class compute_maps:
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
 
-            if sys == "Windows":
+            if not hasattr(ax1, 'background_patch'):
                 for patch in ax1.patches:
                     patch.set_visible(False)
             else:
@@ -377,7 +377,7 @@ class compute_maps:
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
 
-            if sys == "Windows":
+            if not hasattr(ax1, 'background_patch'):
                 for patch in ax1.patches:
                     patch.set_visible(False)
             else:
@@ -423,7 +423,7 @@ class compute_maps:
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
 
-            if sys == "Windows":
+            if not hasattr(ax1, 'background_patch'):
                 for patch in ax1.patches:
                     patch.set_visible(False)
             else:
@@ -471,7 +471,7 @@ class compute_maps:
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
-            if sys == "Windows":
+            if not hasattr(ax1, 'background_patch'):
                 for patch in ax1.patches:
                     patch.set_visible(False)
             else:
@@ -516,7 +516,7 @@ class compute_maps:
             gs = fig.add_gridspec(1, 1)
             ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.PlateCarree())
             axes = [ax1]
-            if sys == "Windows":
+            if not hasattr(ax1, 'background_patch'):
                 for patch in ax1.patches:
                     patch.set_visible(False)
             else:
