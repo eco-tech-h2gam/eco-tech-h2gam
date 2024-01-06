@@ -81,8 +81,10 @@ class compute_maps:
         )
 
         # Download the CSV file from S3
-        self.download_csv_from_s3(self.bucket_name, self.object_key1, self.local_filename1)
-        self.download_csv_from_s3(self.bucket_name, self.object_key2, self.local_filename2)
+        if not os.path.exists(self.local_filename1):
+            self.download_csv_from_s3(self.bucket_name, self.object_key1, self.local_filename1)
+        if not os.path.exists(self.local_filename2):
+            self.download_csv_from_s3(self.bucket_name, self.object_key2, self.local_filename2)
         currentDate = pd.to_datetime(today, dayfirst = False)
         grayDark = '#e1e1e1'
         grayLight = '#404040'
