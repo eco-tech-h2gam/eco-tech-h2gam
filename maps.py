@@ -215,12 +215,12 @@ class compute_maps:
             
             #for lead in progressbar(range(97), 'Compute risk: ', 60):
             print("Computing Atmospheric Pollutants maps ...")
-            
+            selected_columns = ["pm25","co","o3","no2","pm10","so2"]
             if sys == "Windows":
-                dfpollution2 = pd.read_csv(work_dir + "/Enriched_Covid_history_data.csv")
+                dfpollution2 = pd.read_csv(work_dir + "/Enriched_Covid_history_data.csv", usecols=selected_columns)
 
             else:   
-                dfpollution2 = pd.read_csv(work_dir + "/Enriched_Covid_history_data.csv")
+                dfpollution2 = pd.read_csv(work_dir + "/Enriched_Covid_history_data.csv", usecols=selected_columns)
            
             
             dfpollution2= dfpollution2.dropna()
