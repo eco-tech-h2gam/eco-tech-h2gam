@@ -578,7 +578,8 @@ class compute_maps:
             fps = 1 / duration
             imageio.mimsave(gifPath + "PM2.5\\" + gifName, images1, 'GIF', fps = fps , loop=0)
         else:
-            kargs = { 'duration': 1, "loop":0 }
+            duration = 1 
+            kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "PM2.5/" + gifName, images1, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
@@ -588,7 +589,8 @@ class compute_maps:
             fps = 1 / duration
             imageio.mimsave(gifPath + "CO\\" + gifName, images2, 'GIF', fps=fps, loop = 0)
         else:
-            kargs = { 'duration': 1 , "loop" : 0 }
+            duration = 1 
+            kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "CO/" + gifName, images2, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
@@ -598,7 +600,8 @@ class compute_maps:
             fps = 1/ duration
             imageio.mimsave(gifPath + "O3\\" + gifName, images3, 'GIF', fps = fps, loop = 0)
         else:
-            kargs = { 'duration': 1, "loop" : 0 }
+            duration = 1 
+            kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "O3/" + gifName, images3, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
@@ -608,7 +611,8 @@ class compute_maps:
             fps = 1/ duration
             imageio.mimsave(gifPath + "NO2\\" + gifName, images4, 'GIF', fps = fps, loop = 0)
         else:
-            kargs = { 'duration': 1, "loop" : 0 }
+            duration = 1 
+            kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "NO2/" + gifName, images4, 'GIF', **kargs)
 
         print('Create gif ...', flush=True, end='')
@@ -618,7 +622,8 @@ class compute_maps:
             fps = 1/ duration
             imageio.mimsave(gifPath + "PM10\\" + gifName, images5, 'GIF', fps=fps, loop = 0)
         else:
-            kargs = { 'duration': 1, "loop": 0 }
+            duration = 1 
+            kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "PM10/" + gifName, images5, 'GIF', **kargs)
         
         print('Create gif ...', flush=True, end='')
@@ -628,7 +633,8 @@ class compute_maps:
             fps = 1/duration
             imageio.mimsave(gifPath + "SO2\\" + gifName, images6, 'GIF', fps=fps, loop = 0)
         else:
-            kargs = { 'duration': 1 , "loop": 0}
+            duration = 1 
+            kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "SO2/" + gifName, images6, 'GIF', **kargs)
 
         print('OK')
