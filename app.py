@@ -41,6 +41,11 @@ work_dir = os.path.dirname(os.path.abspath(__file__))
 today = date.today()  
 print(today)
 
+def chiffre_heure_actuelle():
+    heure_actuelle = datetime.datetime.now().hour
+    chiffre_heure = heure_actuelle % 10  # Récupère le chiffre des unités de l'heure
+    return chiffre_heure
+
 class app():
 
     def __init__(self, sys, work_dir):
@@ -66,9 +71,8 @@ class app():
 
         dateoffile = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM2.5")).split("_concentration-")[1].split(".")[0],dayfirst = False)
         print(pd.Timestamp(date.today())  - dateoffile)
-        if(pd.Timestamp(date.today())  - dateoffile > pd.Timedelta("1 Days")):
+        if((pd.Timestamp(date.today())  - dateoffile > pd.Timedelta("1 Days")) & (chiffre_heure_actuelle >= 14)):
             print(pd.Timestamp(date.today())  - dateoffile)
-            print("IN HERE")
             if self.sys == "Windows":
                 with open(self.work_dir + "\\DownloadCAMSforecast.py", 'r') as file:
                     script_contents = file.read()
