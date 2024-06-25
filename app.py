@@ -74,7 +74,7 @@ class app():
         print(pd.Timestamp(datetime.date.today()) - dateoffile)
         print(chiffre_heure_actuelle())
         if ((pd.Timestamp(datetime.date.today()) - dateoffile > pd.Timedelta("1 days")) and\
-    (10 <= chiffre_heure_actuelle() <= 15)):
+    (10 == chiffre_heure_actuelle())):
             print(pd.Timestamp(datetime.date.today()) - dateoffile)
             print(self.sys)
             if self.sys == "Windows":
