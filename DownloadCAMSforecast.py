@@ -20,6 +20,7 @@ class download_cams_forecast:
         self.save_to = None
     
     def download(self):
+        print("Downloading CAMS data...")
         sys = platform.system()
         self.work_dir = os.path.dirname(os.path.abspath(__file__))
         print("sys:",sys)

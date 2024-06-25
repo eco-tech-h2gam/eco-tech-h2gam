@@ -33,6 +33,7 @@ import imageio
 from tqdm import tqdm  
 import boto3
 import warnings
+import pytz
 warnings.filterwarnings("ignore")  
 
 sys = platform.system()
@@ -41,9 +42,11 @@ today = date.today()
 print(today)
 
 def chiffre_heure_actuelle():
-    heure_actuelle = datetime.datetime.now().hour
-    chiffre_heure = heure_actuelle % 10  # Récupère le chiffre des unités de l'heure
-    return chiffre_heure
+    # Define the timezone for Paris
+    paris_tz = pytz.timezone('Europe/Paris')
+    # Get the current time in Paris
+    heure_actuelle = datetime.datetime.now(paris_tz).hour
+    return heure_actuelle
 
 class app():
 
@@ -54,6 +57,7 @@ class app():
     def get_latest_gif(self, folder_path):
         gifs = glob.glob(os.path.join(folder_path, '*.gif'))
         latest_gif = max(gifs, key=os.path.getctime)
+        print(max(gifs, key=os.path.getctime))
         return latest_gif
     
     def return_path_to_gif(self, pollutant):
@@ -66,16 +70,19 @@ class app():
     def display_gifs(self):
 
         os.chdir(self.return_path_to_gif("PM2.5"))
-
-
         dateoffile = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM2.5")).split("_concentration-")[1].split(".")[0],dayfirst = False)
-        print(pd.Timestamp(date.today())  - dateoffile)
-        if((pd.Timestamp(date.today())  - dateoffile > pd.Timedelta("1 Days")) & (chiffre_heure_actuelle() >= 10) & (chiffre_heure_actuelle() <= 14)):
-            print(pd.Timestamp(date.today())  - dateoffile)
+        print(pd.Timestamp(datetime.date.today()) - dateoffile)
+        print(chiffre_heure_actuelle())
+        if ((pd.Timestamp(datetime.date.today()) - dateoffile > pd.Timedelta("1 days")) and\
+    (10 <= chiffre_heure_actuelle() <= 11)):
+            print(pd.Timestamp(datetime.date.today()) - dateoffile)
+            print(self.sys)
             if self.sys == "Windows":
+                print("Executing Download script in a Windows environment...")
                 with open(self.work_dir + "\\DownloadCAMSforecast.py", 'r') as file:
                     script_contents = file.read()
                 exec(script_contents)
+                print("Finished Download Script")
                 with open(self.work_dir + "\\maps.py", 'r') as file:
                     script_contents = file.read()
                 exec(script_contents)
