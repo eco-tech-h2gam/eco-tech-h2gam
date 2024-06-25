@@ -70,13 +70,20 @@ class app():
     def display_gifs(self):
 
         os.chdir(self.return_path_to_gif("PM2.5"))
-        dateoffile = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM2.5")).split("_concentration-")[1].split(".")[0],dayfirst = False)
-        print(pd.Timestamp(datetime.date.today()) - dateoffile)
-        print(chiffre_heure_actuelle())
-        if ((pd.Timestamp(datetime.date.today()) - dateoffile > pd.Timedelta("1 days")) and\
-    (10 == chiffre_heure_actuelle())):
-            print(pd.Timestamp(datetime.date.today()) - dateoffile)
-            print(self.sys)
+        dateoffile1 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM2.5")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        dateoffile2 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM10")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        dateoffile3 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("CO")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        dateoffile4 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("NO2")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        dateoffile5 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("SO2")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        dateoffile6 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("O3")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+
+        if ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 > pd.Timedelta("1 days")))|\
+    ((15 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile2 > pd.Timedelta("1 days"))) |\
+    ((15 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile3 > pd.Timedelta("1 days"))) |\
+    ((15 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile4 > pd.Timedelta("1 days"))) |\
+    ((15 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile5 > pd.Timedelta("1 days"))) |\
+    ((15 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile6 > pd.Timedelta("1 days"))) |\
+    ((15 == chiffre_heure_actuelle())):
             if self.sys == "Windows":
                 print("Executing Download script in a Windows environment...")
                 with open(self.work_dir + "\\DownloadCAMSforecast.py", 'r') as file:
