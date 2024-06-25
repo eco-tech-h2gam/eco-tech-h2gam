@@ -11,6 +11,8 @@ heroku logs --tail
 heroku ps
 heroku ps:scale web=0
 heroku open
+heroku git:remote -a gentle-castle-26852
+
 
 [System.Environment]::SetEnvironmentVariable('PATH', $env:PATH + ';C:\Users\ludov\AppData\Roaming\Python\Python311\Scripts', [System.EnvironmentVariableTarget]::Machine)
 
