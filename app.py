@@ -6,6 +6,7 @@ import pandas as pd
 from datetime import datetime
 from datetime import date
 import yaml
+import datetime
 import datetime as dt
 import cdsapi
 import numpy as np
@@ -19,9 +20,7 @@ urllib3.disable_warnings()
 import sys
 import platform
 import os, shutil
-import datetime as dt
-from datetime import datetime
-from datetime import date
+import datetime
 import regionmask
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
