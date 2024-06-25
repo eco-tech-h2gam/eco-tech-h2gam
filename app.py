@@ -71,7 +71,7 @@ class app():
 
         dateoffile = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM2.5")).split("_concentration-")[1].split(".")[0],dayfirst = False)
         print(pd.Timestamp(date.today())  - dateoffile)
-        if((pd.Timestamp(date.today())  - dateoffile > pd.Timedelta("1 Days")) & (chiffre_heure_actuelle >= 10) & (chiffre_heure_actuelle <= 11)):
+        if((pd.Timestamp(date.today())  - dateoffile > pd.Timedelta("1 Days")) & (chiffre_heure_actuelle() >= 10) & (chiffre_heure_actuelle() <= 11)):
             print(pd.Timestamp(date.today())  - dateoffile)
             if self.sys == "Windows":
                 with open(self.work_dir + "\\DownloadCAMSforecast.py", 'r') as file:
