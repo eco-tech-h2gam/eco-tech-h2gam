@@ -41,12 +41,16 @@ work_dir = os.path.dirname(os.path.abspath(__file__))
 today = date.today()  
 print(today)
 
-def chiffre_heure_actuelle():
+def chiffre_heure_actuelle_utc():
+    time_format = "%H:%M"
     # Define the timezone for Paris
     paris_tz = pytz.timezone('Europe/Paris')
     # Get the current time in Paris
-    heure_actuelle = datetime.datetime.now(paris_tz).hour
-    return heure_actuelle
+    paris_time = datetime.datetime.now(paris_tz)
+    localized_paris_time = paris_tz.localize(paris_time)
+    utc_time = localized_paris_time.astimezone(pytz.utc)
+    utc_hour = utc_time.hour
+    return utc_hour
 
 class app():
 
@@ -77,13 +81,13 @@ class app():
         dateoffile5 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("SO2")).split("_concentration-")[1].split(".")[0],dayfirst = False)
         dateoffile6 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("O3")).split("_concentration-")[1].split(".")[0],dayfirst = False)
 
-        if ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 >= pd.Timedelta("1 days")))|\
-    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile2 >= pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile3 >= pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile4 >= pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile5 >= pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile6 >= pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle())):
+        if ((10 == chiffre_heure_actuelle_utc())) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 >= pd.Timedelta("1 days")))|\
+    ((10 == chiffre_heure_actuelle_utc())) & ((pd.Timestamp(datetime.date.today()) - dateoffile2 >= pd.Timedelta("1 days"))) |\
+    ((10 == chiffre_heure_actuelle_utc())) & ((pd.Timestamp(datetime.date.today()) - dateoffile3 >= pd.Timedelta("1 days"))) |\
+    ((10 == chiffre_heure_actuelle_utc())) & ((pd.Timestamp(datetime.date.today()) - dateoffile4 >= pd.Timedelta("1 days"))) |\
+    ((10 == chiffre_heure_actuelle_utc())) & ((pd.Timestamp(datetime.date.today()) - dateoffile5 >= pd.Timedelta("1 days"))) |\
+    ((10 == chiffre_heure_actuelle_utc())) & ((pd.Timestamp(datetime.date.today()) - dateoffile6 >= pd.Timedelta("1 days"))) |\
+    ((10 == chiffre_heure_actuelle_utc())):
             if self.sys == "Windows":
                 print("Executing Download script in a Windows environment...")
                 with open(self.work_dir + "\\DownloadCAMSforecast.py", 'r') as file:
