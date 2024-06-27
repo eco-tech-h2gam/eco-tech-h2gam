@@ -77,12 +77,12 @@ class app():
         dateoffile5 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("SO2")).split("_concentration-")[1].split(".")[0],dayfirst = False)
         dateoffile6 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("O3")).split("_concentration-")[1].split(".")[0],dayfirst = False)
 
-        if ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 > pd.Timedelta("1 days")))|\
-    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile2 > pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile3 > pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile4 > pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile5 > pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile6 > pd.Timedelta("1 days"))) |\
+        if ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 >= pd.Timedelta("1 days")))|\
+    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile2 >= pd.Timedelta("1 days"))) |\
+    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile3 >= pd.Timedelta("1 days"))) |\
+    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile4 >= pd.Timedelta("1 days"))) |\
+    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile5 >= pd.Timedelta("1 days"))) |\
+    ((10 == chiffre_heure_actuelle())) & ((pd.Timestamp(datetime.date.today()) - dateoffile6 >= pd.Timedelta("1 days"))) |\
     ((10 == chiffre_heure_actuelle())):
             if self.sys == "Windows":
                 print("Executing Download script in a Windows environment...")
