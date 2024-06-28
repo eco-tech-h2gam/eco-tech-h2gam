@@ -45,10 +45,10 @@ def chiffre_heure_actuelle_utc():
     time_format = "%H:%M"
     # Define the timezone for Paris
     paris_tz = pytz.timezone('Europe/Paris')
-    # Get the current time in Paris
+    # Get the current time in Paris (this is already a timezone-aware datetime object)
     paris_time = datetime.datetime.now(paris_tz)
-    localized_paris_time = paris_tz.localize(paris_time)
-    utc_time = localized_paris_time.astimezone(pytz.utc)
+    # Convert Paris time to UTC
+    utc_time = paris_time.astimezone(pytz.utc)
     utc_hour = utc_time.hour
     return utc_hour
 
