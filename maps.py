@@ -190,9 +190,9 @@ class compute_maps:
             # newhospipredictionsdf = pd.read_csv(filename)
             # print(filename + " Read!")
             if sys == "Windows":
-                filePath = work_dir + "\\cams\\fr\\forecast\\"
+                filePath = work_dir + "\\cams\\fr\\forecast\\PM2.5\\"
             else:
-                filePath = work_dir + '/cams/fr/forecast/'
+                filePath = work_dir + '/cams/fr/forecast/PM2.5/'
 
             latestfiledatestring = self.findlatestdateofcamsdata(filePath)[1].strftime('%Y-%m-%d')
             currentDatestring = pd.to_datetime(latestfiledatestring, dayfirst = False).strftime('%Y-%m-%d')
