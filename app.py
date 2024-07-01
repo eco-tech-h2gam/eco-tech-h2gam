@@ -86,12 +86,13 @@ class app():
         print(dateoffile4)
         print(dateoffile5)
         print(dateoffile6)
-        if (((10 == chiffre_heure_actuelle_utc())) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 >= pd.Timedelta("1 days")))|\
-    ((10 == chiffre_heure_actuelle_utc())) & (((pd.Timestamp(datetime.date.today()) - dateoffile2) >= pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle_utc())) & (((pd.Timestamp(datetime.date.today()) - dateoffile3) >= pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle_utc())) & (((pd.Timestamp(datetime.date.today()) - dateoffile4) >= pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle_utc())) & (((pd.Timestamp(datetime.date.today()) - dateoffile5) >= pd.Timedelta("1 days"))) |\
-    ((10 == chiffre_heure_actuelle_utc())) & (((pd.Timestamp(datetime.date.today()) - dateoffile6) >= pd.Timedelta("1 days")))):
+        print (chiffre_heure_actuelle_utc())
+        if (((6 <= chiffre_heure_actuelle_utc() <= 11)) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 >= pd.Timedelta("1 days")))|\
+    ((6 <= chiffre_heure_actuelle_utc() <= 11)) & (((pd.Timestamp(datetime.date.today()) - dateoffile2) >= pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 11)) & (((pd.Timestamp(datetime.date.today()) - dateoffile3) >= pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 11)) & (((pd.Timestamp(datetime.date.today()) - dateoffile4) >= pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 11)) & (((pd.Timestamp(datetime.date.today()) - dateoffile5) >= pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 11)) & (((pd.Timestamp(datetime.date.today()) - dateoffile6) >= pd.Timedelta("1 days")))):
             print (chiffre_heure_actuelle_utc())
             if self.sys == "Windows":
                 print("Executing Download script in a Windows environment...")
