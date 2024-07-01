@@ -71,7 +71,7 @@ class compute_maps:
             self.local_filename_init_O3 = self.return_path_to_gif("O3") + "/O3_concentration-2024-06-30.gif"
 
     def return_path_to_gif(self, pollutant):
-        if self.sys == "Windows":
+        if sys == "Windows":
             mypath = work_dir + "\\forecast\\fr\\" + pollutant + "\\"
         else:
             mypath = work_dir + "/forecast/fr/" + pollutant +"/"
@@ -97,7 +97,7 @@ class compute_maps:
                 self.download_pollutant_gif_init_from_s3(self.bucket_name_init_SO2, self.object_key_init_SO2, self.local_filename_init_SO2)
                 self.download_pollutant_gif_init_from_s3(self.bucket_name_init_O3, self.object_key_init_O3, self.local_filename_init_O3)
                 self.findlatestdateofcamsdata(mypath)
-                
+
     def download_pollutant_gif_init_from_s3(self, bucket_name, object_key, local_filename):
         # Create an S3 client
         s3 = boto3.client('s3')
