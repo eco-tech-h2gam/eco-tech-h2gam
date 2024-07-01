@@ -35,16 +35,47 @@ class compute_maps:
         self.aws_secret_access_key = '+AkxikLBIT2eUoDgo4F8RnE7RAO5bkUYR+5QG7ZW'
         self.region_name = 'eu-north-1'  # Replace with your actual region
         self.bucket_name = 'eco-tech-h2gam'
+        self.bucket_name_init_PM25 = 'eco-tech-h2gam/PM2.5/'
+        self.bucket_name_init_PM10 = 'eco-tech-h2gam/PM10/'
+        self.bucket_name_init_CO = 'eco-tech-h2gam/CO/'
+        self.bucket_name_init_NO2 = 'eco-tech-h2gam/NO2/'
+        self.bucket_name_init_SO2 = 'eco-tech-h2gam/SO2/'
+        self.bucket_name_init_O3 = 'eco-tech-h2gam/O3/'
+
         self.object_key1 = 'pop.csv'  # Path to your CSV file in the S3 bucket
         self.object_key2 = 'Enriched_Covid_history_data.csv'  # Path to your CSV file in the S3 bucket
-        
+        self.object_key_init_PM25 = 'PM2.5_concentration-2024-06-30.gif'
+        self.object_key_init_PM10 = 'PM10_concentration-2024-06-30.gif'
+        self.object_key_init_CO = 'CO_concentration-2024-06-30.gif'
+        self.object_key_init_NO2 = 'NO2_concentration-2024-06-30.gif'
+        self.object_key_init_SO2 = 'SO2_concentration-2024-06-30.gif'
+        self.object_key_init_O3 = 'O3_concentration-2024-06-30.gif'
+
         if sys == "Windows":
             self.local_filename1 = work_dir + '\\pop.csv'  # Local file path to save the downloaded file
             self.local_filename2 = work_dir + '\\Enriched_Covid_history_data.csv'  # Local file path to save the downloaded file
+            self.local_filename_init_PM25 = self.return_path_to_gif("PM2.5") + "\\PM2.5_concentration-2024-06-30.gif"
+            self.local_filename_init_PM10 = self.return_path_to_gif("PM10") + "\\PM10_concentration-2024-06-30.gif"
+            self.local_filename_init_CO = self.return_path_to_gif("CO") + "\\CO_concentration-2024-06-30.gif"
+            self.local_filename_init_NO2 = self.return_path_to_gif("NO2") + "\\NO2_concentration-2024-06-30.gif"
+            self.local_filename_init_SO2 = self.return_path_to_gif("SO2") + "\\SO2_concentration-2024-06-30.gif"
+            self.local_filename_init_O3 = self.return_path_to_gif("O3") + "\\O3_concentration-2024-06-30.gif"
         else:
             self.local_filename1 = work_dir + '/pop.csv'  # Local file path to save the downloaded file
             self.local_filename2 = work_dir + '/Enriched_Covid_history_data.csv'  # Local file path to save the downloaded file
+            self.local_filename_init_PM25 = self.return_path_to_gif("PM2.5") + "/PM2.5_concentration-2024-06-30.gif"
+            self.local_filename_init_PM10 = self.return_path_to_gif("PM10") + "/PM10_concentration-2024-06-30.gif"
+            self.local_filename_init_CO =self.return_path_to_gif("CO") + "/CO_concentration-2024-06-30.gif"
+            self.local_filename_init_NO2 = self.return_path_to_gif("NO2") + "/NO2_concentration-2024-06-30.gif"
+            self.local_filename_init_SO2 = self.return_path_to_gif("SO2") + "/SO2_concentration-2024-06-30.gif"
+            self.local_filename_init_O3 = self.return_path_to_gif("O3") + "/O3_concentration-2024-06-30.gif"
 
+    def return_path_to_gif(self, pollutant):
+        if self.sys == "Windows":
+            mypath = work_dir + "\\forecast\\fr\\" + pollutant + "\\"
+        else:
+            mypath = work_dir + "/forecast/fr/" + pollutant +"/"
+        return mypath
     
     def max_normalize(self, x):
         return (x - x.min()) / (x.max() - x.min())
@@ -59,8 +90,25 @@ class compute_maps:
             if dates != []:
                 return (dates, max(dates))
             else:
-                return (dates, dt.date.today() - pd.Timedelta("3 Y"))
-    
+                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_PM25, self.object_key_init_PM25, self.local_filename_init_PM25)
+                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_PM10, self.object_key_init_PM10, self.local_filename_init_PM10)
+                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_CO, self.object_key_init_CO, self.local_filename_init_CO)
+                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_NO2, self.object_key_init_NO2, self.local_filename_init_NO2)
+                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_SO2, self.object_key_init_SO2, self.local_filename_init_SO2)
+                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_O3, self.object_key_init_O3, self.local_filename_init_O3)
+                self.findlatestdateofcamsdata(mypath)
+                
+    def download_pollutant_gif_init_from_s3(self, bucket_name, object_key, local_filename):
+        # Create an S3 client
+        s3 = boto3.client('s3')
+        try:
+            # Download the CSV file from S3
+            s3.download_file(bucket_name, object_key, local_filename)
+            print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
+        except Exception as e:
+            print(f"Error downloading file: {e}")
+
+
     def download_csv_from_s3(self, bucket_name, object_key, local_filename):
         # Create an S3 client
         s3 = boto3.client('s3')
@@ -148,7 +196,7 @@ class compute_maps:
 
             latestfiledatestring = self.findlatestdateofcamsdata(filePath)[1].strftime('%Y-%m-%d')
             currentDatestring = pd.to_datetime(latestfiledatestring, dayfirst = False).strftime('%Y-%m-%d')
-            print("latdate:", latestfiledatestring)
+            print("lastdate:", latestfiledatestring)
             fileName = "cams-forecast-"+latestfiledatestring +".nc"
             pollutants = xr.open_dataset(filePath + fileName).sel(time = j)
 
