@@ -35,6 +35,7 @@ class compute_maps:
         self.aws_secret_access_key = '+AkxikLBIT2eUoDgo4F8RnE7RAO5bkUYR+5QG7ZW'
         self.region_name = 'eu-north-1'  # Replace with your actual region
         self.bucket_name = 'eco-tech-h2gam'
+        self.bucket_name_init_forecast = 'eco-tech-h2gam/cams/fr/forecast/'
         self.bucket_name_init_PM25 = 'eco-tech-h2gam/PM2.5/'
         self.bucket_name_init_PM10 = 'eco-tech-h2gam/PM10/'
         self.bucket_name_init_CO = 'eco-tech-h2gam/CO/'
@@ -44,6 +45,7 @@ class compute_maps:
 
         self.object_key1 = 'pop.csv'  # Path to your CSV file in the S3 bucket
         self.object_key2 = 'Enriched_Covid_history_data.csv'  # Path to your CSV file in the S3 bucket
+        self.object_key_init_forecast = 'eco-tech-h2gam/cams/fr/forecast/'
         self.object_key_init_PM25 = 'PM2.5_concentration-2024-06-30.gif'
         self.object_key_init_PM10 = 'PM10_concentration-2024-06-30.gif'
         self.object_key_init_CO = 'CO_concentration-2024-06-30.gif'
@@ -90,12 +92,9 @@ class compute_maps:
             if dates != []:
                 return (dates, max(dates))
             else:
-                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_PM25, self.object_key_init_PM25, self.local_filename_init_PM25)
-                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_PM10, self.object_key_init_PM10, self.local_filename_init_PM10)
-                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_CO, self.object_key_init_CO, self.local_filename_init_CO)
-                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_NO2, self.object_key_init_NO2, self.local_filename_init_NO2)
-                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_SO2, self.object_key_init_SO2, self.local_filename_init_SO2)
-                self.download_pollutant_gif_init_from_s3(self.bucket_name_init_O3, self.object_key_init_O3, self.local_filename_init_O3)
+                with open(self.work_dir + "/DownloadCAMSforecast.py", 'r') as file:
+                    script_contents = file.read()
+                exec(script_contents)
                 self.findlatestdateofcamsdata(mypath)
 
     def download_pollutant_gif_init_from_s3(self, bucket_name, object_key, local_filename):
@@ -190,9 +189,9 @@ class compute_maps:
             # newhospipredictionsdf = pd.read_csv(filename)
             # print(filename + " Read!")
             if sys == "Windows":
-                filePath = work_dir + "\\cams\\fr\\forecast\\PM2.5\\"
+                filePath = work_dir + "\\cams\\fr\\forecast\\"
             else:
-                filePath = work_dir + '/cams/fr/forecast/PM2.5/'
+                filePath = work_dir + '/cams/fr/forecast/'
 
             latestfiledatestring = self.findlatestdateofcamsdata(filePath)[1].strftime('%Y-%m-%d')
             currentDatestring = pd.to_datetime(latestfiledatestring, dayfirst = False).strftime('%Y-%m-%d')
