@@ -97,6 +97,17 @@ class app():
         date_of_forecastfile = pd.to_datetime(date_of_forecastfile, dayfirst= False)
         print(date_of_forecastfile)
 
+    def download_pollutant_gif_init_from_s3(self, bucket_name, object_key, local_filename):
+        # Create an S3 client
+        s3 = boto3.client('s3')
+        if os.path.isfile(local_filename) == False:
+            try:
+                # Download the CSV file from S3
+                s3.download_file(bucket_name, object_key, local_filename)
+                print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
+            except Exception as e:
+                print(f"Error downloading file: {e}")
+
     def list_all_files_in_aws_s3_bucket(self, bucket_prefix):
         file_list = []
         # Retrieve the list of files
@@ -165,6 +176,14 @@ class app():
                 with open(self.work_dir + "/maps.py", 'r') as file:
                     script_contents = file.read()
                 exec(script_contents)
+
+        else:
+            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_PM25, self.return_path_to_gif("PM25") + self.object_key_init_PM25)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_PM25, self.return_path_to_gif("PM10") + self.object_key_init_PM10)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_PM25, self.return_path_to_gif("CO") + self.object_key_init_CO)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_PM25, self.return_path_to_gif("SO2") + self.object_key_init_SO2)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_PM25, self.return_path_to_gif("NO2") + self.object_key_init_NO2)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_PM25, self.return_path_to_gif("O3") + self.object_key_init_O3)
 
         file_1 = open(self.get_latest_gif(self.return_path_to_gif("PM25")), "rb")
         contents = file_1.read()

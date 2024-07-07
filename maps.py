@@ -145,12 +145,13 @@ class compute_maps:
     def download_pollutant_gif_init_from_s3(self, bucket_name, object_key, local_filename):
         # Create an S3 client
         s3 = boto3.client('s3')
-        try:
-            # Download the CSV file from S3
-            s3.download_file(bucket_name, object_key, local_filename)
-            print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
-        except Exception as e:
-            print(f"Error downloading file: {e}")
+        if os.path.isfile(local_filename) == False:
+            try:
+                # Download the CSV file from S3
+                s3.download_file(bucket_name, object_key, local_filename)
+                print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
+            except Exception as e:
+                print(f"Error downloading file: {e}")
     
     def download_forecast_init_from_s3(self, bucket_name, object_key, local_filename):
         # Create an S3 client
