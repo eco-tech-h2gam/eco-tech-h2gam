@@ -123,9 +123,9 @@ class app():
        
     def display_gifs(self):
 
-        os.chdir(self.return_path_to_gif("PM2.5"))
+        os.chdir(self.return_path_to_gif("PM25"))
         
-        #dateoffile1 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM2.5")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        #dateoffile1 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM25")).split("_concentration-")[1].split(".")[0],dayfirst = False)
         #dateoffile2 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM10")).split("_concentration-")[1].split(".")[0],dayfirst = False)
         #dateoffile3 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("CO")).split("_concentration-")[1].split(".")[0],dayfirst = False)
         #dateoffile4 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("NO2")).split("_concentration-")[1].split(".")[0],dayfirst = False)
@@ -142,12 +142,12 @@ class app():
         
         
         print (chiffre_heure_actuelle_utc())
-        if (((6 <= chiffre_heure_actuelle_utc() <= 16)) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 > pd.Timedelta("1 days")))|\
-    ((6 <= chiffre_heure_actuelle_utc() <= 16)) & (((pd.Timestamp(datetime.date.today()) - dateoffile2) > pd.Timedelta("1 days"))) |\
-    ((6 <= chiffre_heure_actuelle_utc() <= 16)) & (((pd.Timestamp(datetime.date.today()) - dateoffile3) > pd.Timedelta("1 days"))) |\
-    ((6 <= chiffre_heure_actuelle_utc() <= 16)) & (((pd.Timestamp(datetime.date.today()) - dateoffile4) > pd.Timedelta("1 days"))) |\
-    ((6 <= chiffre_heure_actuelle_utc() <= 16)) & (((pd.Timestamp(datetime.date.today()) - dateoffile5) > pd.Timedelta("1 days"))) |\
-    ((6 <= chiffre_heure_actuelle_utc() <= 16)) & (((pd.Timestamp(datetime.date.today()) - dateoffile6) > pd.Timedelta("1 days")))):
+        if (((6 <= chiffre_heure_actuelle_utc() <= 17)) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 > pd.Timedelta("1 days")))|\
+    ((6 <= chiffre_heure_actuelle_utc() <= 17)) & (((pd.Timestamp(datetime.date.today()) - dateoffile2) > pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 17)) & (((pd.Timestamp(datetime.date.today()) - dateoffile3) > pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 17)) & (((pd.Timestamp(datetime.date.today()) - dateoffile4) > pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 17)) & (((pd.Timestamp(datetime.date.today()) - dateoffile5) > pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 17)) & (((pd.Timestamp(datetime.date.today()) - dateoffile6) > pd.Timedelta("1 days")))):
             print (chiffre_heure_actuelle_utc())
             if self.sys == "Windows":
                 print("Executing Download script in a Windows environment...")
@@ -166,7 +166,7 @@ class app():
                     script_contents = file.read()
                 exec(script_contents)
 
-        file_1 = open(self.get_latest_gif(self.return_path_to_gif("PM2.5")), "rb")
+        file_1 = open(self.get_latest_gif(self.return_path_to_gif("PM25")), "rb")
         contents = file_1.read()
         data_url1 = base64.b64encode(contents).decode("utf-8")
         file_1.close()
