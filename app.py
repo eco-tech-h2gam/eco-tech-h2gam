@@ -35,7 +35,22 @@ import boto3
 import warnings
 import pytz
 warnings.filterwarnings("ignore")  
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Access environment variables
+aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+aws_region = os.getenv('AWS_REGION')
+
+# Initialize a session using Amazon S3
+session = boto3.Session(
+    aws_access_key_id=aws_access_key_id,
+    aws_secret_access_key=aws_secret_access_key,
+    region_name=aws_region
+)
 sys = platform.system()
 work_dir = os.path.dirname(os.path.abspath(__file__))
 today = date.today()  
@@ -57,7 +72,42 @@ class app():
     def __init__(self, sys, work_dir):
         self.sys = sys
         self.work_dir = work_dir   
+        self.bucket_name = 'eco-tech-h2gam'
+        self.bucket_forecast_prefix = 'cams/fr/forecast/'
+        self.bucket_PM25_prefix = 'PM25/'
+        self.bucket_PM10_prefix = 'PM10/'
+        self.bucket_CO_prefix = 'CO/'
+        self.bucket_NO2_prefix = 'NO2/'
+        self.bucket_SO2_prefix = 'SO2/'
+        self.bucket_O3_prefix = 'O3/'
+        self.s3 = boto3.client('s3')
+        self.object_key_init_forecast = self.list_all_files_in_aws_s3_bucket(self.bucket_forecast_prefix)[1].split("/")[3]
+        print(self.object_key_init_forecast)
+        self.object_key_init_PM25 = self.list_all_files_in_aws_s3_bucket(self.bucket_PM25_prefix)[1].split("/")[1]
+        self.object_key_init_PM10 = self.list_all_files_in_aws_s3_bucket(self.bucket_PM10_prefix)[1].split("/")[1]
+        self.object_key_init_CO = self.list_all_files_in_aws_s3_bucket(self.bucket_CO_prefix)[1].split("/")[1]
+        self.object_key_init_NO2 = self.list_all_files_in_aws_s3_bucket(self.bucket_NO2_prefix)[1].split("/")[1]
+        print(self.object_key_init_NO2)
+        self.object_key_init_SO2 = self.list_all_files_in_aws_s3_bucket(self.bucket_SO2_prefix)[1].split("/")[1]
+        print(self.object_key_init_SO2)
+        self.object_key_init_O3 = self.list_all_files_in_aws_s3_bucket(self.bucket_O3_prefix)[1].split("/")[1]
+        print(self.object_key_init_O3)
+        date_of_forecastfile = self.object_key_init_forecast.split(".")[0][-10:]
+        print(date_of_forecastfile)
+        date_of_forecastfile = pd.to_datetime(date_of_forecastfile, dayfirst= False)
+        print(date_of_forecastfile)
 
+    def list_all_files_in_aws_s3_bucket(self, bucket_prefix):
+        file_list = []
+        # Retrieve the list of files
+        response = self.s3.list_objects_v2(Bucket=self.bucket_name, Prefix=bucket_prefix)
+        
+        if 'Contents' in response:
+            for obj in response['Contents']:
+                file_list.append(obj['Key'])
+        print(file_list)
+        return file_list
+    
     def get_latest_gif(self, folder_path):
         gifs = glob.glob(os.path.join(folder_path, '*.gif'))
         latest_gif = max(gifs, key=os.path.getctime)
@@ -74,25 +124,30 @@ class app():
     def display_gifs(self):
 
         os.chdir(self.return_path_to_gif("PM2.5"))
-        dateoffile1 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM2.5")).split("_concentration-")[1].split(".")[0],dayfirst = False)
-        dateoffile2 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM10")).split("_concentration-")[1].split(".")[0],dayfirst = False)
-        dateoffile3 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("CO")).split("_concentration-")[1].split(".")[0],dayfirst = False)
-        dateoffile4 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("NO2")).split("_concentration-")[1].split(".")[0],dayfirst = False)
-        dateoffile5 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("SO2")).split("_concentration-")[1].split(".")[0],dayfirst = False)
-        dateoffile6 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("O3")).split("_concentration-")[1].split(".")[0],dayfirst = False)
-        print(dateoffile1)
-        print(dateoffile2)
-        print(dateoffile3)
-        print(dateoffile4)
-        print(dateoffile5)
-        print(dateoffile6)
+        
+        #dateoffile1 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM2.5")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        #dateoffile2 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("PM10")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        #dateoffile3 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("CO")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        #dateoffile4 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("NO2")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        #dateoffile5 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("SO2")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        #dateoffile6 = pd.to_datetime(self.get_latest_gif(self.return_path_to_gif("O3")).split("_concentration-")[1].split(".")[0],dayfirst = False)
+        print("Debug good 1", self.object_key_init_PM25.split(".")[0][-10:])
+        print("Debug good 2",self.object_key_init_PM10.split(".")[0][-10:])
+        dateoffile1 = pd.to_datetime(self.object_key_init_PM25.split(".")[0][-10:], dayfirst = False)
+        dateoffile2 = pd.to_datetime(self.object_key_init_PM10.split(".")[0][-10:], dayfirst = False)
+        dateoffile3 = pd.to_datetime(self.object_key_init_CO.split(".")[0][-10:], dayfirst = False)
+        dateoffile4 = pd.to_datetime(self.object_key_init_NO2.split(".")[0][-10:], dayfirst = False)
+        dateoffile5 = pd.to_datetime(self.object_key_init_SO2.split(".")[0][-10:], dayfirst = False)
+        dateoffile6 = pd.to_datetime(self.object_key_init_O3.split(".")[0][-10:], dayfirst = False)
+        
+        
         print (chiffre_heure_actuelle_utc())
-        if (((6 <= chiffre_heure_actuelle_utc() <= 11)) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 > pd.Timedelta("1 days")))|\
-    ((6 <= chiffre_heure_actuelle_utc() <= 11)) & (((pd.Timestamp(datetime.date.today()) - dateoffile2) > pd.Timedelta("1 days"))) |\
-    ((6 <= chiffre_heure_actuelle_utc() <= 11)) & (((pd.Timestamp(datetime.date.today()) - dateoffile3) > pd.Timedelta("1 days"))) |\
-    ((6 <= chiffre_heure_actuelle_utc() <= 11)) & (((pd.Timestamp(datetime.date.today()) - dateoffile4) > pd.Timedelta("1 days"))) |\
-    ((6 <= chiffre_heure_actuelle_utc() <= 11)) & (((pd.Timestamp(datetime.date.today()) - dateoffile5) > pd.Timedelta("1 days"))) |\
-    ((6 <= chiffre_heure_actuelle_utc() <= 11)) & (((pd.Timestamp(datetime.date.today()) - dateoffile6) > pd.Timedelta("1 days")))):
+        if (((6 <= chiffre_heure_actuelle_utc() <= 16)) & ((pd.Timestamp(datetime.date.today()) - dateoffile1 > pd.Timedelta("1 days")))|\
+    ((6 <= chiffre_heure_actuelle_utc() <= 16)) & (((pd.Timestamp(datetime.date.today()) - dateoffile2) > pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 16)) & (((pd.Timestamp(datetime.date.today()) - dateoffile3) > pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 16)) & (((pd.Timestamp(datetime.date.today()) - dateoffile4) > pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 16)) & (((pd.Timestamp(datetime.date.today()) - dateoffile5) > pd.Timedelta("1 days"))) |\
+    ((6 <= chiffre_heure_actuelle_utc() <= 16)) & (((pd.Timestamp(datetime.date.today()) - dateoffile6) > pd.Timedelta("1 days")))):
             print (chiffre_heure_actuelle_utc())
             if self.sys == "Windows":
                 print("Executing Download script in a Windows environment...")

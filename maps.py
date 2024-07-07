@@ -26,37 +26,58 @@ sys = platform.system()
 work_dir = os.path.dirname(os.path.abspath(__file__))
 today = date.today()  
 print(today)
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Access environment variables
+aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+aws_region = os.getenv('AWS_REGION')
+
+# Initialize a session using Amazon S3
+session = boto3.Session(
+    aws_access_key_id=aws_access_key_id,
+    aws_secret_access_key=aws_secret_access_key,
+    region_name=aws_region
+)
 class compute_maps:
     def __init__(self):
         self.status = None
         self.data = None
-        # Specify your AWS credentials and S3 details
-        self.aws_access_key_id = 'AKIAXYKJRWRBU6Q4P64S'
-        self.aws_secret_access_key = '+AkxikLBIT2eUoDgo4F8RnE7RAO5bkUYR+5QG7ZW'
-        self.region_name = 'eu-north-1'  # Replace with your actual region
         self.bucket_name = 'eco-tech-h2gam'
-        self.bucket_name_init_forecast = 'eco-tech-h2gam/cams/fr/forecast/'
-        self.bucket_name_init_PM25 = 'eco-tech-h2gam/PM2.5/'
-        self.bucket_name_init_PM10 = 'eco-tech-h2gam/PM10/'
-        self.bucket_name_init_CO = 'eco-tech-h2gam/CO/'
-        self.bucket_name_init_NO2 = 'eco-tech-h2gam/NO2/'
-        self.bucket_name_init_SO2 = 'eco-tech-h2gam/SO2/'
-        self.bucket_name_init_O3 = 'eco-tech-h2gam/O3/'
+        self.bucket_name_prefix_forecast = 'cams/fr/forecast/'
+        self.bucket_name_prefix_PM25 = 'PM25/'
+        self.bucket_name_prefix_PM10 = 'PM10/'
+        self.bucket_name_prefix_CO = 'CO/'
+        self.bucket_name_prefix_NO2 = 'NO2/'
+        self.bucket_name_prefix_SO2 = 'SO2/'
+        self.bucket_name_prefix_O3 = 'O3/'
 
         self.object_key1 = 'pop.csv'  # Path to your CSV file in the S3 bucket
         self.object_key2 = 'Enriched_Covid_history_data.csv'  # Path to your CSV file in the S3 bucket
-        self.object_key_init_forecast = 'eco-tech-h2gam/cams/fr/forecast/'
-        self.object_key_init_PM25 = 'PM2.5_concentration-2024-06-30.gif'
-        self.object_key_init_PM10 = 'PM10_concentration-2024-06-30.gif'
-        self.object_key_init_CO = 'CO_concentration-2024-06-30.gif'
-        self.object_key_init_NO2 = 'NO2_concentration-2024-06-30.gif'
-        self.object_key_init_SO2 = 'SO2_concentration-2024-06-30.gif'
-        self.object_key_init_O3 = 'O3_concentration-2024-06-30.gif'
+        self.s3 = boto3.client('s3')
+        self.object_key_init_forecast = self.list_all_files_in_aws_s3_bucket(self.bucket_forecast_prefix)[1].split("/")[3]
+        print(self.object_key_init_forecast)
+        self.object_key_init_PM25 = self.list_all_files_in_aws_s3_bucket(self.bucket_PM25_prefix)[1].split("/")[1]
+        self.object_key_init_PM10 = self.list_all_files_in_aws_s3_bucket(self.bucket_PM10_prefix)[1].split("/")[1]
+        self.object_key_init_CO = self.list_all_files_in_aws_s3_bucket(self.bucket_CO_prefix)[1].split("/")[1]
+        self.object_key_init_NO2 = self.list_all_files_in_aws_s3_bucket(self.bucket_NO2_prefix)[1].split("/")[1]
+        print(self.object_key_init_NO2)
+        self.object_key_init_SO2 = self.list_all_files_in_aws_s3_bucket(self.bucket_SO2_prefix)[1].split("/")[1]
+        print(self.object_key_init_SO2)
+        self.object_key_init_O3 = self.list_all_files_in_aws_s3_bucket(self.bucket_O3_prefix)[1].split("/")[1]
+        print(self.object_key_init_O3)
+        date_of_forecastfile = self.object_key_init_forecast.split(".")[0][-10:]
+        print(date_of_forecastfile)
+        date_of_forecastfile = pd.to_datetime(date_of_forecastfile, dayfirst= False)
+        print(date_of_forecastfile)
 
         if sys == "Windows":
             self.local_filename1 = work_dir + '\\pop.csv'  # Local file path to save the downloaded file
             self.local_filename2 = work_dir + '\\Enriched_Covid_history_data.csv'  # Local file path to save the downloaded file
-            self.local_filename_init_PM25 = self.return_path_to_gif("PM2.5") + "\\PM2.5_concentration-2024-06-30.gif"
+            self.local_filename_init_PM25 = self.return_path_to_gif("PM25") + "\\PM25_concentration-2024-06-30.gif"
             self.local_filename_init_PM10 = self.return_path_to_gif("PM10") + "\\PM10_concentration-2024-06-30.gif"
             self.local_filename_init_CO = self.return_path_to_gif("CO") + "\\CO_concentration-2024-06-30.gif"
             self.local_filename_init_NO2 = self.return_path_to_gif("NO2") + "\\NO2_concentration-2024-06-30.gif"
@@ -65,12 +86,36 @@ class compute_maps:
         else:
             self.local_filename1 = work_dir + '/pop.csv'  # Local file path to save the downloaded file
             self.local_filename2 = work_dir + '/Enriched_Covid_history_data.csv'  # Local file path to save the downloaded file
-            self.local_filename_init_PM25 = self.return_path_to_gif("PM2.5") + "/PM2.5_concentration-2024-06-30.gif"
+            self.local_filename_init_PM25 = self.return_path_to_gif("PM25") + "/PM25_concentration-2024-06-30.gif"
             self.local_filename_init_PM10 = self.return_path_to_gif("PM10") + "/PM10_concentration-2024-06-30.gif"
             self.local_filename_init_CO =self.return_path_to_gif("CO") + "/CO_concentration-2024-06-30.gif"
             self.local_filename_init_NO2 = self.return_path_to_gif("NO2") + "/NO2_concentration-2024-06-30.gif"
             self.local_filename_init_SO2 = self.return_path_to_gif("SO2") + "/SO2_concentration-2024-06-30.gif"
             self.local_filename_init_O3 = self.return_path_to_gif("O3") + "/O3_concentration-2024-06-30.gif"
+
+    def list_all_files_in_aws_s3_bucket(self, bucket_prefix):
+        file_list = []
+        # Retrieve the list of files
+        response = self.s3.list_objects_v2(Bucket=self.bucket_name, Prefix=bucket_prefix)
+        
+        if 'Contents' in response:
+            for obj in response['Contents']:
+                file_list.append(obj['Key'])
+        print(file_list)
+        return file_list
+    
+    def delete_previous_file_from_aws_and_save_new_file_to_aws(self, bucket_prefix, object_key, outputfile):
+        # Delete the previous file from the S3 bucket
+        if self.object_key_init_forecast:
+            key = bucket_prefix + object_key
+            print("Debug",key)
+            self.s3.delete_object(Bucket=self.bucket_name, Key=key)
+            print(f"Deleted {self.object_key_init_forecast} from S3 bucket.")
+
+        # Upload the new file to the S3 bucket
+        new_object_key = f"{bucket_prefix}{os.path.basename(outputfile)}"
+        self.s3.upload_file(outputfile, self.bucket_name, new_object_key)
+        print(f"Uploaded {outputfile} to S3 bucket as {new_object_key}.")
 
     def return_path_to_gif(self, pollutant):
         if sys == "Windows":
@@ -98,6 +143,16 @@ class compute_maps:
                 self.findlatestdateofcamsdata(mypath)
 
     def download_pollutant_gif_init_from_s3(self, bucket_name, object_key, local_filename):
+        # Create an S3 client
+        s3 = boto3.client('s3')
+        try:
+            # Download the CSV file from S3
+            s3.download_file(bucket_name, object_key, local_filename)
+            print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
+        except Exception as e:
+            print(f"Error downloading file: {e}")
+    
+    def download_forecast_init_from_s3(self, bucket_name, object_key, local_filename):
         # Create an S3 client
         s3 = boto3.client('s3')
         try:
@@ -182,17 +237,18 @@ class compute_maps:
         #   'pm251Mavg','o31Mavg','no21Mavg','co1Mavg','population','hospi','CovidPosTest' ]] \
         #     = [dfpollution3[dfpollution3['numero'] == depNum].reindex(columns = ['1MMaxpm25','1MMaxpm10','1MMaxo3','1MMaxno2','1MMaxco','pm107davg','pm257davg','o37davg','no27davg','co7davg','pm101Mavg',\
         #   'pm251Mavg','o31Mavg','no21Mavg','co1Mavg','idx','hospi','CovidPosTest' ]).values.squeeze() for depNum in covidExtraToCom['dep']]
+        if sys == "Windows":
+            filePath = work_dir + "\\cams\\fr\\forecast\\"
+        else:
+            filePath = work_dir + '/cams/fr/forecast/'
 
+        self.download_forecast_init_from_s3(self.bucket_name, self.bucket_name_prefix_forecast, filePath + self.object_key_init_forecast)
         for j in tqdm(times):
             print(j)
             # filename = "/home/ludo915/code/covsco/predictions/fr/" + currentDatestring + "_predictions_for_day_" + str(counter) +".csv"
             # newhospipredictionsdf = pd.read_csv(filename)
             # print(filename + " Read!")
-            if sys == "Windows":
-                filePath = work_dir + "\\cams\\fr\\forecast\\"
-            else:
-                filePath = work_dir + '/cams/fr/forecast/'
-
+ 
             latestfiledatestring = self.findlatestdateofcamsdata(filePath)[1].strftime('%Y-%m-%d')
             currentDatestring = pd.to_datetime(latestfiledatestring, dayfirst = False).strftime('%Y-%m-%d')
             print("lastdate:", latestfiledatestring)
@@ -347,7 +403,7 @@ class compute_maps:
                 else:
                     text_x = 0.5  # X-coordinate in axes coordinates
                     text_y = 0.95  # Y-coordinate in axes coordinates
-                    text = 'PM2.5-concentration:' + currentDatestring + " + " + j
+                    text = 'PM25-concentration:' + currentDatestring + " + " + j
                     a.text(text_x, text_y, text, transform=a.transAxes, color='red', fontsize=10, ha='center', va='center')
                 pass
                
@@ -363,7 +419,7 @@ class compute_maps:
             ax1.text(0,.0,'Data \nCAMS', transform=ax1.transAxes,fontdict={'size':12})
 
             currentDateWD = pd.to_datetime(latestfiledatestring).strftime('%a, %d - %m, %Y')
-            ax1.set_title('PM2.5 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
+            ax1.set_title('PM25 concentrations: \n{:}\n'.format(currentDateWD + " + "+ str (counter) + " days"),
             loc='left', pad=-60)
 
             fig.subplots_adjust(bottom=.01, left=.01, right=.99, top=.99)
@@ -621,37 +677,43 @@ class compute_maps:
         else:
             gifPath = work_dir + "/forecast/fr/"
 
-        gifName = 'PM2.5_concentration-{:}.gif'.format(currentDatestring)
+        gifName = 'PM25_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1 / duration
-            imageio.mimsave(gifPath + "PM2.5\\" + gifName, images1, 'GIF', fps = fps , loop=0)
+            imageio.mimsave(gifPath + "PM25\\" + gifName, images1, 'GIF', fps = fps , loop=0)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_PM25, self.object_key_init_PM25, gifPath + "PM25\\" + gifName)
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
-            imageio.mimwrite(gifPath + "PM2.5/" + gifName, images1, 'GIF', **kargs)
-
+            imageio.mimwrite(gifPath + "PM25/" + gifName, images1, 'GIF', **kargs)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_PM25, self.object_key_init_PM25, gifPath + "PM25/" + gifName)
+ 
         print('Create gif ...', flush=True, end='')
         gifName = 'CO_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1 / duration
             imageio.mimsave(gifPath + "CO\\" + gifName, images2, 'GIF', fps=fps, loop = 0)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_CO, self.object_key_init_CO, gifPath + "CO\\" + gifName)
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "CO/" + gifName, images2, 'GIF', **kargs)
-
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_CO, self.object_key_init_CO, gifPath + "CO/" + gifName)
         print('Create gif ...', flush=True, end='')
+
         gifName = 'O3_concentration-{:}.gif'.format(currentDatestring)
         if sys == "Windows":
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
             imageio.mimsave(gifPath + "O3\\" + gifName, images3, 'GIF', fps = fps, loop = 0)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_O3, self.object_key_init_O3, gifPath + "O3\\" + gifName)
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "O3/" + gifName, images3, 'GIF', **kargs)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_O3, self.object_key_init_O3, gifPath + "O3/" + gifName)
 
         print('Create gif ...', flush=True, end='')
         gifName = 'NO2_concentration-{:}.gif'.format(currentDatestring)
@@ -659,10 +721,14 @@ class compute_maps:
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
             imageio.mimsave(gifPath + "NO2\\" + gifName, images4, 'GIF', fps = fps, loop = 0)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_NO2, self.object_key_init_NO2, gifPath + "NO2\\" + gifName)
+
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "NO2/" + gifName, images4, 'GIF', **kargs)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_NO2, self.object_key_init_NO2, gifPath + "NO2/" + gifName)
+
 
         print('Create gif ...', flush=True, end='')
         gifName = 'PM10_concentration-{:}.gif'.format(currentDatestring)
@@ -670,10 +736,14 @@ class compute_maps:
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
             imageio.mimsave(gifPath + "PM10\\" + gifName, images5, 'GIF', fps=fps, loop = 0)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_PM10, self.object_key_init_PM10, gifPath + "PM10\\" + gifName)
+
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "PM10/" + gifName, images5, 'GIF', **kargs)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_PM10, self.object_key_init_PM10, gifPath + "PM10/" + gifName)
+
         
         print('Create gif ...', flush=True, end='')
         gifName = 'SO2_concentration-{:}.gif'.format(currentDatestring)
@@ -681,10 +751,14 @@ class compute_maps:
             duration = 1  # Adjust the duration value as needed
             fps = 1/duration
             imageio.mimsave(gifPath + "SO2\\" + gifName, images6, 'GIF', fps=fps, loop = 0)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_SO2, self.object_key_init_SO2, gifPath + "SO2\\" + gifName)
+
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "SO2/" + gifName, images6, 'GIF', **kargs)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_SO2, self.object_key_init_SO2, gifPath + "SO2/" + gifName)
+
 
         print('OK')
         print('Finished.')
