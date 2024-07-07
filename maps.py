@@ -47,13 +47,13 @@ class compute_maps:
         self.status = None
         self.data = None
         self.bucket_name = 'eco-tech-h2gam'
-        self.bucket_name_prefix_forecast = 'cams/fr/forecast/'
-        self.bucket_name_prefix_PM25 = 'PM25/'
-        self.bucket_name_prefix_PM10 = 'PM10/'
-        self.bucket_name_prefix_CO = 'CO/'
-        self.bucket_name_prefix_NO2 = 'NO2/'
-        self.bucket_name_prefix_SO2 = 'SO2/'
-        self.bucket_name_prefix_O3 = 'O3/'
+        self.bucket_forecast_prefix = 'cams/fr/forecast/'
+        self.bucket_PM25_prefix = 'PM25/'
+        self.bucket_PM10_prefix = 'PM10/'
+        self.bucket_CO_prefix = 'CO/'
+        self.bucket_NO2_prefix = 'NO2/'
+        self.bucket_SO2_prefix = 'SO2/'
+        self.bucket_O3_prefix = 'O3/'
 
         self.object_key1 = 'pop.csv'  # Path to your CSV file in the S3 bucket
         self.object_key2 = 'Enriched_Covid_history_data.csv'  # Path to your CSV file in the S3 bucket
@@ -110,7 +110,7 @@ class compute_maps:
             key = bucket_prefix + object_key
             print("Debug",key)
             self.s3.delete_object(Bucket=self.bucket_name, Key=key)
-            print(f"Deleted {self.object_key_init_forecast} from S3 bucket.")
+            print(f"Deleted {key} from S3 bucket.")
 
         # Upload the new file to the S3 bucket
         new_object_key = f"{bucket_prefix}{os.path.basename(outputfile)}"
@@ -155,12 +155,13 @@ class compute_maps:
     def download_forecast_init_from_s3(self, bucket_name, object_key, local_filename):
         # Create an S3 client
         s3 = boto3.client('s3')
-        try:
-            # Download the CSV file from S3
-            s3.download_file(bucket_name, object_key, local_filename)
-            print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
-        except Exception as e:
-            print(f"Error downloading file: {e}")
+        if os.path.isfile(local_filename) == False:
+            try:
+                # Download the CSV file from S3
+                s3.download_file(bucket_name, object_key, local_filename)
+                print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
+            except Exception as e:
+                print(f"Error downloading file: {e}")
 
 
     def download_csv_from_s3(self, bucket_name, object_key, local_filename):
@@ -175,12 +176,6 @@ class compute_maps:
             print(f"Error downloading file: {e}")
 
     def compute_maps(self):
-        # Set up AWS credentials
-        boto3.setup_default_session(
-            aws_access_key_id=self.aws_access_key_id,
-            aws_secret_access_key=self.aws_secret_access_key,
-            region_name=self.region_name
-        )
 
         # Download the CSV file from S3
         if not os.path.exists(self.local_filename1):
@@ -242,7 +237,8 @@ class compute_maps:
         else:
             filePath = work_dir + '/cams/fr/forecast/'
 
-        self.download_forecast_init_from_s3(self.bucket_name, self.bucket_name_prefix_forecast, filePath + self.object_key_init_forecast)
+        self.download_forecast_init_from_s3(self.bucket_name, self.bucket_forecast_prefix, filePath + self.object_key_init_forecast)
+        print("DEBUG:", filePath + self.object_key_init_forecast)
         for j in tqdm(times):
             print(j)
             # filename = "/home/ludo915/code/covsco/predictions/fr/" + currentDatestring + "_predictions_for_day_" + str(counter) +".csv"
@@ -253,6 +249,7 @@ class compute_maps:
             currentDatestring = pd.to_datetime(latestfiledatestring, dayfirst = False).strftime('%Y-%m-%d')
             print("lastdate:", latestfiledatestring)
             fileName = "cams-forecast-"+latestfiledatestring +".nc"
+            print("DEBUG2:", filePath + fileName)
             pollutants = xr.open_dataset(filePath + fileName).sel(time = j)
 
             pm25 = pollutants.pm2p5_conc
@@ -682,12 +679,12 @@ class compute_maps:
             duration = 1  # Adjust the duration value as needed
             fps = 1 / duration
             imageio.mimsave(gifPath + "PM25\\" + gifName, images1, 'GIF', fps = fps , loop=0)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_PM25, self.object_key_init_PM25, gifPath + "PM25\\" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_PM25_prefix, self.object_key_init_PM25, gifPath + "PM25\\" + gifName)
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "PM25/" + gifName, images1, 'GIF', **kargs)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_PM25, self.object_key_init_PM25, gifPath + "PM25/" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_PM25_prefix, self.object_key_init_PM25, gifPath + "PM25/" + gifName)
  
         print('Create gif ...', flush=True, end='')
         gifName = 'CO_concentration-{:}.gif'.format(currentDatestring)
@@ -695,12 +692,12 @@ class compute_maps:
             duration = 1  # Adjust the duration value as needed
             fps = 1 / duration
             imageio.mimsave(gifPath + "CO\\" + gifName, images2, 'GIF', fps=fps, loop = 0)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_CO, self.object_key_init_CO, gifPath + "CO\\" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_CO_prefix, self.object_key_init_CO, gifPath + "CO\\" + gifName)
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "CO/" + gifName, images2, 'GIF', **kargs)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_CO, self.object_key_init_CO, gifPath + "CO/" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_CO_prefix, self.object_key_init_CO, gifPath + "CO/" + gifName)
         print('Create gif ...', flush=True, end='')
 
         gifName = 'O3_concentration-{:}.gif'.format(currentDatestring)
@@ -708,12 +705,12 @@ class compute_maps:
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
             imageio.mimsave(gifPath + "O3\\" + gifName, images3, 'GIF', fps = fps, loop = 0)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_O3, self.object_key_init_O3, gifPath + "O3\\" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_O3_prefix, self.object_key_init_O3, gifPath + "O3\\" + gifName)
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "O3/" + gifName, images3, 'GIF', **kargs)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_O3, self.object_key_init_O3, gifPath + "O3/" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_O3_prefix, self.object_key_init_O3, gifPath + "O3/" + gifName)
 
         print('Create gif ...', flush=True, end='')
         gifName = 'NO2_concentration-{:}.gif'.format(currentDatestring)
@@ -721,13 +718,13 @@ class compute_maps:
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
             imageio.mimsave(gifPath + "NO2\\" + gifName, images4, 'GIF', fps = fps, loop = 0)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_NO2, self.object_key_init_NO2, gifPath + "NO2\\" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_NO2_prefix, self.object_key_init_NO2, gifPath + "NO2\\" + gifName)
 
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "NO2/" + gifName, images4, 'GIF', **kargs)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_NO2, self.object_key_init_NO2, gifPath + "NO2/" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_NO2_prefix, self.object_key_init_NO2, gifPath + "NO2/" + gifName)
 
 
         print('Create gif ...', flush=True, end='')
@@ -736,13 +733,13 @@ class compute_maps:
             duration = 1  # Adjust the duration value as needed
             fps = 1/ duration
             imageio.mimsave(gifPath + "PM10\\" + gifName, images5, 'GIF', fps=fps, loop = 0)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_PM10, self.object_key_init_PM10, gifPath + "PM10\\" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_PM10_prefix, self.object_key_init_PM10, gifPath + "PM10\\" + gifName)
 
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "PM10/" + gifName, images5, 'GIF', **kargs)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_PM10, self.object_key_init_PM10, gifPath + "PM10/" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_PM10_prefix, self.object_key_init_PM10, gifPath + "PM10/" + gifName)
 
         
         print('Create gif ...', flush=True, end='')
@@ -751,13 +748,13 @@ class compute_maps:
             duration = 1  # Adjust the duration value as needed
             fps = 1/duration
             imageio.mimsave(gifPath + "SO2\\" + gifName, images6, 'GIF', fps=fps, loop = 0)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_SO2, self.object_key_init_SO2, gifPath + "SO2\\" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_SO2_prefix, self.object_key_init_SO2, gifPath + "SO2\\" + gifName)
 
         else:
             duration = 1 
             kargs = {'fps':1/duration, "loop":0 }
             imageio.mimwrite(gifPath + "SO2/" + gifName, images6, 'GIF', **kargs)
-            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_name_prefix_SO2, self.object_key_init_SO2, gifPath + "SO2/" + gifName)
+            self.delete_previous_file_from_aws_and_save_new_file_to_aws(self.bucket_SO2_prefix, self.object_key_init_SO2, gifPath + "SO2/" + gifName)
 
 
         print('OK')
