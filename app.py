@@ -102,20 +102,23 @@ class app():
         s3 = boto3.client('s3')
         
         if not os.path.isfile(local_filename):
+            full_object_key = bucket_prefix + object_key
             try:
                 # Check if the object exists
-                s3.head_object(Bucket=bucket_name, Key=object_key)
+                print(f"Checking existence of object: {full_object_key} in bucket: {bucket_name}")
+                s3.head_object(Bucket=bucket_name, Key=full_object_key)
+                
                 # Download the file from S3
-                print(bucket_name + object_key)
-                s3.download_file(bucket_name, bucket_prefix + object_key, local_filename)
-                print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
+                print(f"Attempting to download {full_object_key} from bucket {bucket_name} to {local_filename}")
+                s3.download_file(bucket_name, full_object_key, local_filename)
+                print(f"Successfully downloaded {full_object_key} from {bucket_name} to {local_filename}")
             except s3.exceptions.NoSuchBucket:
                 print(f"The bucket {bucket_name} does not exist.")
             except s3.exceptions.NoSuchKey:
-                print(f"The object {bucket_prefix + object_key} does not exist in the bucket {bucket_name}.")
+                print(f"The object {full_object_key} does not exist in the bucket {bucket_name}.")
             except s3.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == '404':
-                    print(f"Object {bucket_prefix + object_key} not found in bucket {bucket_name}.")
+                    print(f"Object {full_object_key} not found in bucket {bucket_name}.")
                 else:
                     print(f"Client error: {e}")
             except Exception as e:
