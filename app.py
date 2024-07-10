@@ -97,7 +97,7 @@ class app():
         date_of_forecastfile = pd.to_datetime(date_of_forecastfile, dayfirst= False)
         print(date_of_forecastfile)
 
-    def download_pollutant_gif_init_from_s3(self, bucket_name, object_key, local_filename):
+    def download_pollutant_gif_init_from_s3(self, bucket_name, bucket_prefix, object_key, local_filename):
         # Create an S3 client
         s3 = boto3.client('s3')
         
@@ -107,12 +107,12 @@ class app():
                 s3.head_object(Bucket=bucket_name, Key=object_key)
                 # Download the file from S3
                 print(bucket_name + object_key)
-                s3.download_file(bucket_name, object_key, local_filename)
+                s3.download_file(bucket_name, bucket_prefix + object_key, local_filename)
                 print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
             except s3.exceptions.NoSuchBucket:
-                print(f"The bucket {bucket_name} {object_key} does not exist.")
+                print(f"The bucket {bucket_name} does not exist.")
             except s3.exceptions.NoSuchKey:
-                print(f"The object {object_key} does not exist in the bucket {bucket_name}.")
+                print(f"The object {bucket_prefix + object_key} does not exist in the bucket {bucket_name}.")
             except s3.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == '404':
                     print(f"Object {object_key} not found in bucket {bucket_name}.")
@@ -191,12 +191,12 @@ class app():
                 exec(script_contents)
 
         else:
-            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_PM25, self.return_path_to_gif("PM25") + self.object_key_init_PM25)
-            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_PM10, self.return_path_to_gif("PM10") + self.object_key_init_PM10)
-            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_CO, self.return_path_to_gif("CO") + self.object_key_init_CO)
-            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_SO2, self.return_path_to_gif("SO2") + self.object_key_init_SO2)
-            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_NO2, self.return_path_to_gif("NO2") + self.object_key_init_NO2)
-            self.download_pollutant_gif_init_from_s3(self.bucket_name, self.object_key_init_O3, self.return_path_to_gif("O3") + self.object_key_init_O3)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_PM25_prefix + self.object_key_init_PM25, self.return_path_to_gif("PM25") + self.object_key_init_PM25)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_PM10_prefix + self.object_key_init_PM10, self.return_path_to_gif("PM10") + self.object_key_init_PM10)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_CO_prefix + self.object_key_init_CO, self.return_path_to_gif("CO") + self.object_key_init_CO)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_SO2_prefix + self.object_key_init_SO2, self.return_path_to_gif("SO2") + self.object_key_init_SO2)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_NO2_prefix + self.object_key_init_NO2, self.return_path_to_gif("NO2") + self.object_key_init_NO2)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_O3_prefix + self.object_key_init_O3, self.return_path_to_gif("O3") + self.object_key_init_O3)
 
         file_1 = open(self.get_latest_gif(self.return_path_to_gif("PM25")), "rb")
         contents = file_1.read()
