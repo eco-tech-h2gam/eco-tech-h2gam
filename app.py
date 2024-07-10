@@ -106,10 +106,11 @@ class app():
                 # Check if the object exists
                 s3.head_object(Bucket=bucket_name, Key=object_key)
                 # Download the file from S3
+                print(bucket_name + object_key)
                 s3.download_file(bucket_name, object_key, local_filename)
                 print(f"Successfully downloaded {object_key} from {bucket_name} to {local_filename}")
             except s3.exceptions.NoSuchBucket:
-                print(f"The bucket {bucket_name} does not exist.")
+                print(f"The bucket {bucket_name} {object_key} does not exist.")
             except s3.exceptions.NoSuchKey:
                 print(f"The object {object_key} does not exist in the bucket {bucket_name}.")
             except s3.exceptions.ClientError as e:
