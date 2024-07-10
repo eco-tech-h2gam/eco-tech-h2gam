@@ -191,12 +191,12 @@ class app():
                 exec(script_contents)
 
         else:
-            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_PM25_prefix + self.object_key_init_PM25, self.return_path_to_gif("PM25") + self.object_key_init_PM25)
-            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_PM10_prefix + self.object_key_init_PM10, self.return_path_to_gif("PM10") + self.object_key_init_PM10)
-            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_CO_prefix + self.object_key_init_CO, self.return_path_to_gif("CO") + self.object_key_init_CO)
-            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_SO2_prefix + self.object_key_init_SO2, self.return_path_to_gif("SO2") + self.object_key_init_SO2)
-            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_NO2_prefix + self.object_key_init_NO2, self.return_path_to_gif("NO2") + self.object_key_init_NO2)
-            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_O3_prefix + self.object_key_init_O3, self.return_path_to_gif("O3") + self.object_key_init_O3)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_PM25_prefix, self.object_key_init_PM25, self.return_path_to_gif("PM25") + self.object_key_init_PM25)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_PM10_prefix, self.object_key_init_PM10, self.return_path_to_gif("PM10") + self.object_key_init_PM10)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_CO_prefix, self.object_key_init_CO, self.return_path_to_gif("CO") + self.object_key_init_CO)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_SO2_prefix, self.object_key_init_SO2, self.return_path_to_gif("SO2") + self.object_key_init_SO2)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_NO2_prefix, self.object_key_init_NO2, self.return_path_to_gif("NO2") + self.object_key_init_NO2)
+            self.download_pollutant_gif_init_from_s3(self.bucket_name,self.bucket_O3_prefix, self.object_key_init_O3, self.return_path_to_gif("O3") + self.object_key_init_O3)
 
         file_1 = open(self.get_latest_gif(self.return_path_to_gif("PM25")), "rb")
         contents = file_1.read()
