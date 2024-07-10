@@ -97,7 +97,7 @@ class app():
         date_of_forecastfile = pd.to_datetime(date_of_forecastfile, dayfirst= False)
         print(date_of_forecastfile)
 
-    def download_pollutant_gif_init_from_s3(bucket_name, object_key, local_filename):
+    def download_pollutant_gif_init_from_s3(self, bucket_name, object_key, local_filename):
         # Create an S3 client
         s3 = boto3.client('s3')
         
