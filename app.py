@@ -115,7 +115,7 @@ class app():
                 print(f"The object {bucket_prefix + object_key} does not exist in the bucket {bucket_name}.")
             except s3.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == '404':
-                    print(f"Object {object_key} not found in bucket {bucket_name}.")
+                    print(f"Object {bucket_prefix + object_key} not found in bucket {bucket_name}.")
                 else:
                     print(f"Client error: {e}")
             except Exception as e:
